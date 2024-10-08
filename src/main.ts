@@ -1,12 +1,18 @@
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
 
 import App from './App.vue'
 import router from './router'
+import pinia from './stores/index'
+
+/**
+ * 样式
+ */
+import './styles/reset.css' // 初始化
+import 'nprogress/nprogress.css' // 进度条
 
 const app = createApp(App)
 
-app.use(createPinia())
+app.use(pinia)
 app.use(router)
 
 app.mount('#app')
