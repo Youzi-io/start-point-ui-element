@@ -7,6 +7,7 @@ import pinia from './stores/index'
 /**
  * 样式
  */
+import './styles/global.scss' // 全局样式
 import './styles/reset.css' // 初始化
 import 'nprogress/nprogress.css' // 进度条
 
