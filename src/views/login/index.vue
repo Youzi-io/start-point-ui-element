@@ -29,19 +29,13 @@
             </el-form-item>
 
             <el-form-item prop="captcha">
-              <el-row :gutter="24">
-                <el-col :span="14">
-                  <el-input v-model="formData.captcha" placeholder="请输入验证码">
-                    <template #prefix>
-                      <MSIcon name="Key" size="16"></MSIcon>
-                    </template>
-                  </el-input>
-                </el-col>
-                <!-- 验证码 -->
-                <el-col :span="10">
-                  <img class="img-code" :src="imgCode" @click="getValidateCode" alt="加载失败。" />
-                </el-col>
-              </el-row>
+              <el-input v-model="formData.captcha" placeholder="请输入验证码" style="width: 190px;">
+                <template #prefix>
+                  <MSIcon name="Key" size="16"></MSIcon>
+                </template>
+              </el-input>
+              <!-- 验证码 -->
+              <img class="img-code" :src="imgCode" @click="getValidateCode" alt="加载失败。" />
             </el-form-item>
 
             <el-form-item prop="">
@@ -62,10 +56,11 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import MSIcon from '@/components/MSIcon/index.vue';
 import type { LoginParams } from '@/types/auth';
+import { getValidateCodeApi } from '@/api/auth';
 
 const formRef = ref<FormInstance>()
 const formData = reactive<LoginParams>({
@@ -84,11 +79,11 @@ const rules = reactive<FormRules<LoginParams>>({
 })
 
 const getValidateCode = () => {
-  // getValidateCodeApi().then((res) => {
-  //   formData.codeKey = res.data.codeKey
-  //   imgCode.value = res.data.codeValue
-  //   formData.captcha = ''
-  // })
+  getValidateCodeApi().then((res) => {
+    formData.codeKey = res.data.codeKey
+    imgCode.value = res.data.codeValue
+    formData.captcha = ''
+  })
 }
 
 const submitForm = async (formEl: FormInstance | undefined) => {
@@ -101,6 +96,10 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     }
   })
 }
+
+onMounted(() => {
+  getValidateCode()
+})
 </script>
 
 
@@ -196,6 +195,8 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 
       // 图片验证码
       .img-code {
+        width: 150px;
+        height: 48px;
         margin-left: 20px;
         cursor: pointer;
       }
