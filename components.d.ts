@@ -29,5 +29,6 @@ declare module 'vue' {
     MSIcon: typeof import('./src/components/MSIcon/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    ScrollBar: typeof import('./src/components/ScrollBar/index.vue')['default']
   }
 }
