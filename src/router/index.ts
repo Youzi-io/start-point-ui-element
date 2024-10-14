@@ -14,15 +14,15 @@ const routes: RouteRecordRaw[] = [
       title: '登录'
     },
     component: () => import('@/views/login/index.vue')
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'notFound',
+    component: () => import('@/views/error/index.vue'),
+    meta: {
+      title: '404'
+    }
   }
-  // {
-  //   path: '/:pathMatch(.*)*',
-  //   name: 'notFound',
-  //   component: () => import('@/views/error/notFound/index.vue'),
-  //   meta: {
-  //     title: '404'
-  //   }
-  // }
 ]
 
 const router = createRouter({
