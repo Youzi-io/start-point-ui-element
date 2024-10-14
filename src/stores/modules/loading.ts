@@ -2,19 +2,19 @@ import { defineStore } from 'pinia'
 
 export const useLoadingStore = defineStore('loadingStore', {
   state: (): State => ({
+    fullscreenLoading: false,
     loading: false,
-    delay: 1,
-    tip: '加载中...'
+    text: '加载中...'
   }),
   actions: {
-    isLoading(val: boolean) {
+    isLocalLoading(val: boolean) {
       this.loading = val
     }
   }
 })
 
 interface State {
+  fullscreenLoading: boolean
   loading: boolean
-  delay: number
-  tip: string
+  text: string
 }
