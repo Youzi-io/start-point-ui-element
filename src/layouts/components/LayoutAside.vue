@@ -10,9 +10,35 @@
     <!-- 菜单 -->
     <div class="layout-aside__menu">
       <ScrollBar>
-        <el-menu v-model:value="currentRoutes" :collapsed="props.collapsed" :collapsed-width="64"
+        <!-- <el-menu v-model:value="currentRoutes" :collapsed="props.collapsed" :collapsed-width="64"
           :collapsed-icon-size="22" :options="items" key-field="fullPath" label-field="title" children-field="children"
-          @update:value="menuClick" />
+          @update:value="menuClick" /> -->
+
+        <el-menu :default-active="currentRoutes" :collapse="props.collapsed">
+          <template v-for="item in menuList" :key="item.id">
+
+            <el-sub-menu :index="item.fullPath">
+              <template #title>
+                <MSIcon :name="item.icon!" size="20"></MSIcon>
+                <span>{{ item.routesName }}</span>
+              </template>
+
+              <el-menu-item index="1-1">item one</el-menu-item>
+
+              <el-sub-menu index="1-4">
+                <template #title><span>item four</span></template>
+                <el-menu-item index="1-4-1">item one</el-menu-item>
+              </el-sub-menu>
+            </el-sub-menu>
+
+            <el-menu-item index="2">
+              <el-icon><icon-menu /></el-icon>
+              <template #title>Navigator Two</template>
+            </el-menu-item>
+
+          </template>
+
+        </el-menu>
       </ScrollBar>
     </div>
   </div>
@@ -37,50 +63,6 @@ const props = withDefaults(defineProps<Props>(), {
 const permissionStore = usePermissionStore()
 
 const menuList = permissionStore.menuRouters
-const getItem = (
-  title: string,
-  fullPath: string,
-  icon?: () => VNode,
-  children?: MenuOption[] | null,
-  type?: string,
-  link?: boolean
-): MenuOption => {
-  return {
-    fullPath,
-    icon,
-    children,
-    title,
-    type,
-    link
-  } as MenuOption
-}
-const renderIcon = (icon: string) => {
-  return () => h(MSIcon, { name: icon, size: '18' })
-}
-const generateMenu = (item: RoutesInfoRes[]) => {
-  const data: MenuOption[] = []
-  item.forEach((item) => {
-    const { icon, fullPath, children, title, type, showStatus, isExternalLink } = item
-    if (showStatus === '0') {
-      let currentChildren = undefined
-      if (Array.isArray(children)) {
-        currentChildren = generateMenu(children)
-      } else if (type == MenuTypeEnum.Directory && isExternalLink === '1') {
-        currentChildren = []
-      }
-      const menuItem = getItem(
-        title,
-        fullPath,
-        icon ? renderIcon(icon) : undefined,
-        currentChildren
-      )
-      menuItem.link = isExternalLink === '0' // 判断是否为外链 是则为true，否则为false
-      data.push(menuItem)
-    }
-  })
-  return data
-}
-const items = reactive<MenuOption[]>(generateMenu(menuList))
 
 const router = useRouter()
 const menuClick = (key: string, item: MenuOption) => {
