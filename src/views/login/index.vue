@@ -57,10 +57,13 @@
 
 <script lang="ts" setup>
 import { onMounted, reactive, ref } from 'vue'
-import type { FormInstance, FormRules } from 'element-plus'
+import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import MSIcon from '@/components/MSIcon/index.vue';
 import type { LoginParams } from '@/types/auth';
 import { getValidateCodeApi } from '@/api/auth';
+import { useUserStore } from '@/stores'
+import { md5 } from 'js-md5';
+import { useRoute, useRouter } from 'vue-router';
 
 const formRef = ref<FormInstance>()
 const formData = reactive<LoginParams>({
@@ -86,11 +89,45 @@ const getValidateCode = () => {
   })
 }
 
+const userStore = useUserStore()
+const router = useRouter()
+const route = useRoute()
 const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
-  await formEl.validate((valid, fields) => {
+  await formEl.validate(async (valid, fields) => {
     if (valid) {
-      console.log('submit!')
+      let params = {
+        ...formData
+      }
+      let loginInfo = userStore.loginInfo
+      if (loginInfo && loginInfo.password !== params.password) {
+        params.password = md5(params.password).toLocaleUpperCase()
+      } else if (!loginInfo) {
+        params.password = md5(params.password).toLocaleUpperCase()
+      }
+
+      await userStore.login(params).then(() => {
+        ElMessage({
+          message: '登录成功',
+          type: 'success',
+          plain: true,
+        })
+        if (rbPassword.value) {
+          userStore.setLoginInfo({
+            account: params.account,
+            password: params.password
+          })
+        } else {
+          userStore.setLoginInfo(null)
+        }
+        const redirect = route.query.redirect as string
+        if (redirect) {
+          const redirectUrl = decodeURIComponent(redirect)
+          router.push(redirectUrl)
+        } else {
+          router.push('/')
+        }
+      }).catch(() => getValidateCode())
     } else {
       console.log('error submit!', fields)
     }
@@ -98,6 +135,12 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 }
 
 onMounted(() => {
+  let loginInfo = userStore.loginInfo
+  if (loginInfo) {
+    rbPassword.value = true
+    formData.account = loginInfo.account
+    formData.password = loginInfo.password
+  }
   getValidateCode()
 })
 </script>
