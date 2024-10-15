@@ -2,9 +2,12 @@
   <div class="layout-aside">
     <!-- 头部 -->
     <div class="layout-aside__head">
-      <div class="logo" v-show="!props.collapsed">start point</div>
-      <div v-show="props.collapsed">
-        <MSIcon name="Radio_Button_Checked" size="30"></MSIcon>
+      <div class="logo" v-show="!props.collapsed">
+        start point
+      </div>
+      <div class="collapse">
+        <MSIcon v-show="!props.collapsed" name="Arrow_Menu_Close" size="30"></MSIcon>
+        <MSIcon v-show="props.collapsed" name="Arrow_Menu_Open" size="30"></MSIcon>
       </div>
     </div>
     <!-- 菜单 -->
@@ -16,28 +19,14 @@
 
         <el-menu :default-active="currentRoutes" :collapse="props.collapsed">
           <template v-for="item in menuList" :key="item.id">
-
-            <el-sub-menu :index="item.fullPath">
-              <template #title>
+            <SubMenu v-if="item.children" :route-info="item" />
+            <el-menu-item v-if="!item.children" :index="item.fullPath">
+              <el-icon>
                 <MSIcon :name="item.icon!" size="20"></MSIcon>
-                <span>{{ item.routesName }}</span>
-              </template>
-
-              <el-menu-item index="1-1">item one</el-menu-item>
-
-              <el-sub-menu index="1-4">
-                <template #title><span>item four</span></template>
-                <el-menu-item index="1-4-1">item one</el-menu-item>
-              </el-sub-menu>
-            </el-sub-menu>
-
-            <el-menu-item index="2">
-              <el-icon><icon-menu /></el-icon>
-              <template #title>Navigator Two</template>
+              </el-icon>
+              <template #title>{{ item.routesName }}</template>
             </el-menu-item>
-
           </template>
-
         </el-menu>
       </ScrollBar>
     </div>
@@ -45,13 +34,13 @@
 </template>
 
 <script setup lang="ts">
-import { h, reactive, ref, watch, type VNode } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import type { RoutesInfoRes } from '@/types/system/routes'
 import MSIcon from '@/components/MSIcon/index.vue'
 import ScrollBar from '@/components/ScrollBar/index.vue'
 import { usePermissionStore } from '@/stores'
 import { MenuTypeEnum } from '@/constants/routesEnum'
+import SubMenu from './SubMenu.vue';
 
 const route = useRoute()
 const currentRoutes = ref<string>(route.path)
@@ -65,15 +54,15 @@ const permissionStore = usePermissionStore()
 const menuList = permissionStore.menuRouters
 
 const router = useRouter()
-const menuClick = (key: string, item: MenuOption) => {
-  if (item.link) {
-    window.open(item.fullPath as string, '_blank')
-  } else {
-    router.push({
-      path: key
-    })
-  }
-}
+// const menuClick = (key: string, item: MenuOption) => {
+//   if (item.link) {
+//     window.open(item.fullPath as string, '_blank')
+//   } else {
+//     router.push({
+//       path: key
+//     })
+//   }
+// }
 
 watch(
   route,
@@ -103,14 +92,19 @@ $head-height: 54px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #18a058;
+    color: var(--el-color-primary);
     background-color: #fcfcfc;
 
     .logo {
-      flex: 1;
-      text-align: center;
       font-size: 30px;
-      white-space: nowrap;
+    }
+
+    .collapse {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 10px;
+      cursor: pointer;
     }
   }
 

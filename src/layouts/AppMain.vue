@@ -13,9 +13,8 @@
       </n-layout-content>
     </n-layout>
   </n-layout> -->
-
   <el-container class="layout">
-    <el-aside :width="width" class="aside">
+    <el-aside :width="`${width}px`" class="aside">
       <LayoutAside :collapsed="collapsed" />
     </el-aside>
     <el-container>
@@ -68,22 +67,19 @@ provide<ProvideTag>('provideTag', {
   }
 
   .aside {
-    margin: 10px 0 10px 10px;
+    margin: 10px;
     box-sizing: content-box;
-
-    :deep(.n-layout-sider-scroll-container) {
-      @include divInitialization();
-    }
+    @include divInitialization();
   }
 
   .header {
-    padding: 10px 10px 0;
+    padding: 10px 10px 0 0;
   }
 
   .content {
     height: calc(100% - 56px);
     overflow: hidden;
-    padding: 10px;
+    padding: 10px 10px 10px 0;
 
     :deep(.n-layout-scroll-container) {
       margin-inline-end: -5px;

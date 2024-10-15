@@ -1,15 +1,9 @@
 <template>
   <div class="tag" ref="tagRef" @wheel.passive="wheelTag">
     <div class="tag-list">
-      <div
-        class="tag-list__item"
-        ref="tagItemRef"
-        :class="{ 'tag-list__item--active': currentTagIndex === index }"
-        v-for="(item, index) in tagStore.tagList"
-        :key="index"
-        @click="chooseTag(item, index)"
-        @contextmenu="openTagMenu(index, $event)"
-      >
+      <div class="tag-list__item" ref="tagItemRef" :class="{ 'tag-list__item--active': currentTagIndex === index }"
+        v-for="(item, index) in tagStore.tagList" :key="index" @click="chooseTag(item, index)"
+        @contextmenu="openTagMenu(index, $event)">
         <span>
           {{ item.title }}
         </span>
@@ -20,77 +14,58 @@
       <div class="tag-active-box" :style="{ width: tagWidth, left: tagLeftPosition }"></div>
     </div>
   </div>
-  <div
-    class="tag-dropdown-box"
-    ref="tagDropdownBox"
-    v-show="showTagMenu"
-    :style="{ left: tagMenuPosition.x, top: tagMenuPosition.y }"
-  >
-    <n-space vertical>
-      <n-button
-        quaternary
-        block
-        :disabled="!isCurrentTag"
-        @click="tagMenuOperation(TagOptionMenuEnum.Refresh)"
-      >
+  <div class="tag-dropdown-box" ref="tagDropdownBox" v-show="showTagMenu"
+    :style="{ left: tagMenuPosition.x, top: tagMenuPosition.y }">
+    <el-space direction="vertical">
+      <el-button text :disabled="!isCurrentTag" @click="tagMenuOperation(TagOptionMenuEnum.Refresh)">
         <template #icon>
           <MSIcon name="Refresh" size="18"></MSIcon>
         </template>
         重新加载
-      </n-button>
-      <n-button quaternary block @click="tagMenuOperation(TagOptionMenuEnum.Close)">
+      </el-button>
+      <el-button text @click="tagMenuOperation(TagOptionMenuEnum.Close)">
         <template #icon>
           <MSIcon name="Close" size="18"></MSIcon>
         </template>
         关闭标签
-      </n-button>
-      <n-button
-        quaternary
-        block
-        :disabled="tagStore.tagList.length <= 1"
-        @click="tagMenuOperation(TagOptionMenuEnum.Other)"
-      >
+      </el-button>
+      <el-button text :disabled="tagStore.tagList.length <= 1" @click="tagMenuOperation(TagOptionMenuEnum.Other)">
         <template #icon>
           <MSIcon name="Remove" size="18"></MSIcon>
         </template>
         关闭其他标签
-      </n-button>
-      <n-button
-        quaternary
-        block
-        :disabled="tagStore.tagList.length <= 1"
-        @click="tagMenuOperation(TagOptionMenuEnum.All)"
-      >
+      </el-button>
+      <el-button text :disabled="tagStore.tagList.length <= 1" @click="tagMenuOperation(TagOptionMenuEnum.All)">
         <template #icon>
           <MSIcon name="Crop_Square" size="18"></MSIcon>
         </template>
         关闭全部标签
-      </n-button>
-    </n-space>
+      </el-button>
+    </el-space>
   </div>
 </template>
 
 <script setup lang="ts">
 import type { ProvideTag } from '@/types/layouts/tag'
 import { ref, onMounted, reactive, inject, watch, nextTick } from 'vue'
-import { useTagStore } from '@/plugins/stores/index'
+import { useTagStore } from '@/stores/index'
 import MSIcon from '@/components/MSIcon/index.vue'
-import { useMessage } from 'naive-ui'
 import { TagOptionMenuEnum } from '@/constants/tagEnum'
 import { useRoute, useRouter } from 'vue-router'
 import type { TagList } from '@/types/tag'
 import { mainRouteName } from '@/permission'
+import { ElMessage } from 'element-plus'
 
 const tagStore = useTagStore()
-
-const message = useMessage()
 
 const route = useRoute()
 
 const { collapsedWidth, width, collapsed, refresh } = inject<ProvideTag>('provideTag', {
   refresh: () => {
-    message.warning('加载失败!', {
-      duration: 1000
+    ElMessage({
+      message: '加载失败',
+      type: 'warning',
+      plain: true,
     })
   }
 })
@@ -299,10 +274,13 @@ interface TagMenuPosition {
       transition: all 0.3s;
 
       &--active {
-        color: #18a058;
+        color: var(--el-color-primary);
+        ;
       }
+
       &:hover {
-        color: #18a058;
+        color: var(--el-color-primary);
+        ;
       }
 
       .close {
@@ -315,7 +293,8 @@ interface TagMenuPosition {
 
         &:hover {
           color: #fff;
-          background-color: #18a058;
+          background-color: var(--el-color-primary);
+          ;
         }
       }
     }
@@ -343,7 +322,7 @@ interface TagMenuPosition {
   padding: 10px 0;
   @include divInitialization();
 
-  .n-button {
+  .el-button {
     border-radius: 0;
   }
 }

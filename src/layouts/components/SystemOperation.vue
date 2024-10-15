@@ -1,49 +1,48 @@
 <template>
   <div class="system-operation">
-    <n-dropdown
-      trigger="click"
-      :options="langList"
-      key-field="value"
-      label-field="content"
-      @select="switchLanguage"
-    >
+    <el-dropdown trigger="click">
       <div class="system-operation__item lang">
         <MSIcon name="Translate" size="18"></MSIcon>
       </div>
-    </n-dropdown>
+      <template #dropdown>
+        <el-dropdown-menu>
+          <el-dropdown-item v-for="item in langList" :key="item.value" @click="switchLanguage(item)">{{ item.content
+            }}</el-dropdown-item>
+        </el-dropdown-menu>
+      </template>
+    </el-dropdown>
 
     <div class="system-operation__item lang" @click="handleFullscreen">
       <MSIcon name="Fullscreen" size="18" v-show="!fullScreen"></MSIcon>
       <MSIcon name="Fullscreen_Exit" size="18" v-show="fullScreen"></MSIcon>
     </div>
 
-    <n-popover trigger="click" placement="bottom-end">
-      <template #trigger>
+    <el-popover trigger="click" placement="bottom-end">
+      <template #reference>
         <div class="system-operation__item user">
-          <n-avatar round :src="avatar"></n-avatar>
+          <el-avatar :src="avatar"></el-avatar>
           <span class="username">{{ username }}</span>
         </div>
       </template>
       <div class="user-popover">
-        <n-avatar :size="50" round :src="avatar"></n-avatar>
+        <el-avatar :size="50" :src="avatar"></el-avatar>
         <div class="username">{{ username }}</div>
         <div class="time">{{ time }}</div>
-        <n-button type="error" ghost @click="logout"> 退出登录 </n-button>
+        <el-button type="danger" plain @click="logout"> 退出登录 </el-button>
       </div>
-    </n-popover>
+    </el-popover>
   </div>
 </template>
 
 <script setup lang="ts">
 import { langList, useLocale } from '@/locales/useLocale'
-import { useLoadingStore, useUserStore } from '@/plugins/stores'
+import { useLoadingStore, useUserStore } from '@/stores'
 import type { LangList } from '@/types/lang'
-import { useMessage } from 'naive-ui'
 import MSIcon from '@/components/MSIcon/index.vue'
 import { onMounted, onUnmounted, ref } from 'vue'
 import dayjs from 'dayjs'
+import { ElMessage } from 'element-plus'
 
-const message = useMessage()
 const loadingStore = useLoadingStore()
 const userStore = useUserStore()
 const username = userStore.userInfo.username // 用户名
@@ -53,13 +52,13 @@ const time = ref<string>('')
 const timeInterval = ref<number>(0)
 
 const { cutoverLang } = useLocale()
-const switchLanguage = (key: string | number, option: LangList) => {
-  loadingStore.isLoading(true)
+const switchLanguage = (option: LangList) => {
+  loadingStore.isFullscreenLoading(true)
   setTimeout(() => {
     cutoverLang(option.value)
   }, 500)
   setTimeout(() => {
-    loadingStore.isLoading(false)
+    loadingStore.isFullscreenLoading(false)
   }, 1000)
 }
 
@@ -86,7 +85,11 @@ const handleTime = () => {
 // 退出登录
 const logout = async () => {
   await userStore.logout()
-  message.success('已登出')
+  ElMessage({
+    message: '已登出',
+    type: 'success',
+    plain: true,
+  })
 }
 
 onMounted(() => {
@@ -125,7 +128,7 @@ onUnmounted(() => {
     box-sizing: border-box;
     padding: 0 15px;
 
-    .n-avatar {
+    .el-avatar {
       margin: 0 5px;
       width: 25px;
       height: 25px;
