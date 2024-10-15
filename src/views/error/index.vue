@@ -84,7 +84,7 @@ const switchAccounts = () => {
     width: 300px;
 
     .hint {
-      color: #18a058;
+      color: var(--el-color-primary);
       font-weight: 700;
       font-size: 32px;
       margin-bottom: 20px;
