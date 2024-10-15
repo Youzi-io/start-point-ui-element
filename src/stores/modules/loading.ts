@@ -7,7 +7,10 @@ export const useLoadingStore = defineStore('loadingStore', {
     text: '加载中...'
   }),
   actions: {
-    isLocalLoading(val: boolean) {
+    isFullscreenLoading(val: boolean) {
+      this.fullscreenLoading = val
+    },
+    isLoading(val: boolean) {
       this.loading = val
     }
   }
