@@ -22,7 +22,9 @@ export const usePermissionStore = defineStore('permissionStore', {
       flushDynamicRoutes()
     }
   },
-  persist: true
+  persist: {
+    pick: ['menuRouters']
+  }
 })
 
 interface State {
