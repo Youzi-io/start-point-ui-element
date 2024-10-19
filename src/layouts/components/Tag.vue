@@ -46,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ProvideTag } from '@/types/layouts/tag'
+import type { ProvideMenu, ProvideTag } from '@/types/layouts'
 import { ref, onMounted, reactive, inject, watch, nextTick } from 'vue'
 import { useTagStore } from '@/stores/index'
 import MSIcon from '@/components/MSIcon/index.vue'
@@ -60,7 +60,8 @@ const tagStore = useTagStore()
 
 const route = useRoute()
 
-const { collapsedWidth, width, collapsed, refresh } = inject<ProvideTag>('provideTag', {
+const { collapsedWidth, width, collapsed } = inject<ProvideMenu>('provideMenu', {})
+const { refresh } = inject<ProvideTag>('provideTag', {
   refresh: () => {
     ElMessage({
       message: '加载失败',
@@ -137,16 +138,10 @@ const openTagMenu = (index: number, event: MouseEvent) => {
   }
   currentTagMenuIndex.value = index
   showTagMenu.value = true
-  if (
-    collapsed instanceof Object &&
-    typeof collapsedWidth === 'number' &&
-    typeof width === 'number'
-  ) {
-    const x = event!.clientX - (collapsed.value ? collapsedWidth : width) - 10
-    const y = event!.clientY
-    tagMenuPosition.x = `${x}px`
-    tagMenuPosition.y = `${y}px`
-  }
+  const x = event!.clientX
+  const y = event!.clientY
+  tagMenuPosition.x = `${x}px`
+  tagMenuPosition.y = `${y}px`
 }
 
 // tag菜单操作方法

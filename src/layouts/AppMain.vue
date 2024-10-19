@@ -1,21 +1,7 @@
 <template>
-  <!-- <n-layout has-sider class="layout">
-    <n-layout-sider class="aside" bordered collapse-mode="width" :collapsed-width="collapsedWidth" :width="width"
-      :collapsed="collapsed" show-trigger @collapse="collapsed = true" @expand="collapsed = false">
-      <LayoutAside :collapsed="collapsed" />
-    </n-layout-sider>
-    <n-layout>
-      <n-layout-header class="header">
-        <LayoutHeader />
-      </n-layout-header>
-      <n-layout-content class="content">
-        <LayoutContent />
-      </n-layout-content>
-    </n-layout>
-  </n-layout> -->
   <el-container class="layout">
-    <el-aside :width="`${width}px`" class="aside">
-      <LayoutAside :collapsed="collapsed" />
+    <el-aside :width="collapsed ? `${collapsedWidth}px` : `${width}px`" class="aside">
+      <LayoutAside />
     </el-aside>
     <el-container>
       <el-header class="header">
@@ -33,7 +19,7 @@ import LayoutAside from './components/LayoutAside.vue'
 import LayoutHeader from './components/LayoutHeader.vue'
 import LayoutContent from './components/LayoutContent.vue'
 import { provide, ref } from 'vue'
-import type { ProvideTag } from '@/types/layouts/tag'
+import type { ProvideMenu, ProvideTag } from '@/types/layouts'
 import { ElMessage } from 'element-plus'
 
 const collapsed = ref<boolean>(false)
@@ -46,11 +32,16 @@ const refresh = () => {
     plain: true,
   })
 }
-
-provide<ProvideTag>('provideTag', {
+const handleCollapse = () => {
+  collapsed.value = !collapsed.value
+}
+provide<ProvideMenu>('provideMenu', {
   collapsedWidth,
   width,
   collapsed,
+  handleCollapse
+})
+provide<ProvideTag>('provideTag', {
   refresh
 })
 </script>
@@ -69,6 +60,7 @@ provide<ProvideTag>('provideTag', {
   .aside {
     margin: 10px;
     box-sizing: content-box;
+    transition: width 0.3s ease;
     @include divInitialization();
   }
 

@@ -10,6 +10,7 @@ import pinia from './stores'
 import './styles/global.scss' // 全局样式
 import './styles/reset.css' // 初始化
 import 'nprogress/nprogress.css' // 进度条
+import 'element-plus/dist/index.css' // element plus
 
 /**
  * 核心

@@ -4,19 +4,19 @@
       <el-icon>
         <MSIcon :name="props.routeInfo?.icon!" size="20"></MSIcon>
       </el-icon>
-      <span>{{ props.routeInfo?.routesName }}</span>
+      <span>{{ props.routeInfo?.title }}</span>
     </template>
 
     <template v-for="item in props.routeInfo?.children" :key="item.id">
-      <el-menu-item v-if="!item.children" :index="item.fullPath">
+      <el-menu-item v-if="!item.children && item.showStatus === '0'" :index="item.fullPath">
         <el-icon>
           <MSIcon :name="item.icon!" size="20"></MSIcon>
         </el-icon>
         <template #title>
-          {{ item.routesName }}
+          {{ item.title }}
         </template>
       </el-menu-item>
-      <SubMenu v-if="item.children" :routeInfo="item"></SubMenu>
+      <SubMenu v-if="item.children && item.showStatus === '0'" :routeInfo="item"></SubMenu>
     </template>
   </el-sub-menu>
 </template>
