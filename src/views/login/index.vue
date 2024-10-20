@@ -11,7 +11,7 @@
           <div class="title title-top">登录到</div>
           <div class="title">Start Point</div>
 
-          <el-form ref="formRef" :model="formData" :rules="rules">
+          <el-form ref="formRef" :model="formData" :rules="rules" @keyup.enter="submitForm(formRef)">
             <el-form-item prop="account">
               <el-input v-model="formData.account" placeholder="请输入账户名">
                 <template #prefix>
@@ -39,7 +39,7 @@
             </el-form-item>
 
             <el-form-item prop="">
-              <el-checkbox v-model:checked="rbPassword"> 记住密码 </el-checkbox>
+              <el-checkbox v-model="rbPassword"> 记住密码 </el-checkbox>
             </el-form-item>
 
             <el-form-item>
@@ -129,7 +129,11 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         }
       }).catch(() => getValidateCode())
     } else {
-      console.log('error submit!', fields)
+      ElMessage({
+        message: Object.values(fields!)[0][0].message,
+        type: 'warning',
+        plain: true,
+      })
     }
   })
 }
