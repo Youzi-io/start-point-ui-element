@@ -1,30 +1,33 @@
 <template>
   <div class="container">
     <el-form ref="formRef" :model="queryParams" label-position="left" class="search-form">
-      <el-form-item prop="username" label="用户名">
-        <el-input v-model="queryParams.username" placeholder="请输入用户名"></el-input>
-      </el-form-item>
+      <el-space wrap>
+        <el-form-item prop="username" label="用户名">
+          <el-input v-model="queryParams.username" placeholder="请输入用户名"></el-input>
+        </el-form-item>
 
-      <el-form-item prop="status" label="状态">
-        <el-select v-model="queryParams.status" clearable placeholder="请选择状态" style="width: 140px">
-          <el-option v-for="item in statusOptions" :key="item.id" :label="item.dictTag" :value="item.dictValue" />
-        </el-select>
-      </el-form-item>
+        <el-form-item prop="status" label="状态">
+          <el-select v-model="queryParams.status" clearable placeholder="请选择状态" style="width: 140px">
+            <el-option v-for="item in statusOptions" :key="item.id" :label="item.dictTag" :value="item.dictValue" />
+          </el-select>
+        </el-form-item>
 
-      <el-form-item>
-        <el-button type="primary" @click="getData">搜索</el-button>
-        <el-button style="margin: 0 8px" @click="resetForm">重置</el-button>
-      </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="getData">搜索</el-button>
+          <el-button style="margin: 0 8px" @click="resetForm">重置</el-button>
+        </el-form-item>
+      </el-space>
     </el-form>
 
-    <TableHeader :isNoSelection="!checkData.length" @refresh-click="refresh" @add-click="addRow"
-      @edit-click="batchEditRow" @delete-click="batchDeleteRow"></TableHeader>
+    <STableHeader :isNoSelection="!checkData.length" @refresh-click="refresh" @add-click="addRow"
+      @edit-click="batchEditRow" @delete-click="batchDeleteRow"></STableHeader>
 
-    <!-- <n-spin :show="show" :delay="delay">
-      <n-data-table :columns="columns" :data="data" :row-key="rowKey" :pagination="false" :scroll-x="scrollX" bordered
-        :single-line="false" :checked-row-keys="checkData" @update:checked-row-keys="handleCheck">
-      </n-data-table>
-    </n-spin> -->
+    <STable :columns="columns" :data="data">
+      <template #sex="{ row }">
+        {{ row }}
+      </template>
+    </STable>
+
     <!-- <Pagination v-model:page="queryParams.pageNum" v-model:pageSize="queryParams.pageSize" :pageSizes="pageSizes"
       :total="total" @update-page="getData" @update-page-size="getData"></Pagination> -->
     <!-- <UserAdd ref="userAddRef" @success="getData"></UserAdd> -->
@@ -36,7 +39,8 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue'
 import { batchDeleteUserApi, deleteUserApi, getUserListApi } from '@/api/system/user'
-import TableHeader from '@/components/TableHeader/index.vue'
+import STableHeader from '@/components/STableHeader/index.vue'
+import STable from '@/components/STable/index.vue';
 import UserAdd from './add/index.vue'
 import UserEdit from './edit/index.vue'
 import UserBatchEdit from './batchEdit/index.vue'
@@ -47,104 +51,81 @@ import { mainRouteName } from '@/permission'
 import { useDictStore } from '@/stores'
 import type { DictDataInfo } from '@/types/system/dictData'
 import { ElMessage, type FormInstance } from 'element-plus'
+import type { Columns } from '@/types/components/sTable';
 
 const formRef = ref<FormInstance>()
-const show = ref<boolean>(false)
-const delay = 500
 const avatarPrefixUrl = import.meta.env.VITE_FILE_PATH_BASE_URL + '/images/'
-const rowKey = (row: IRowData) => row.id
 // 表格
-const columns = [
+const columns: Columns[] = [
   {
     type: 'selection',
-    width: 50
+    width: '50'
   },
   {
-    title: '用户名',
-    key: 'username',
-    width: 160,
+    label: '用户名',
+    prop: 'username',
+    width: '160',
     align: 'center',
-    ellipsis: true
+    showOverflowTooltip: true,
   },
   {
-    title: '账号',
-    key: 'account',
-    width: 160,
+    label: '账号',
+    prop: 'account',
+    width: '160',
     align: 'center',
-    ellipsis: true
+    showOverflowTooltip: true,
   },
   {
-    title: '性别',
-    key: 'sex',
-    width: 160,
+    label: '性别',
+    prop: 'sex',
+    slot: 'sex',
+    width: '160',
     align: 'center',
-    render: (row: IRowData) => {
-      const item = sexOptions.value.find((item) => item.dictValue == row.sex)
-
-    }
   },
   {
-    title: '头像',
-    key: 'avatar',
-    width: 100,
+    label: '头像',
+    prop: 'avatar',
+    width: '100',
     align: 'center',
-    render: (row: IRowData) => {
-    }
   },
   {
-    title: '邮箱',
-    key: 'email',
-    width: 160,
+    label: '邮箱',
+    prop: 'email',
+    width: '160',
     align: 'center',
-    ellipsis: true
+    showOverflowTooltip: true,
   },
   {
-    title: '手机号',
-    key: 'phone',
-    width: 160,
+    label: '手机号',
+    prop: 'phone',
+    width: '160',
     align: 'center',
-    ellipsis: true
   },
   {
-    title: '状态',
-    key: 'status',
-    width: 80,
+    label: '状态',
+    prop: 'status',
+    width: '80',
     align: 'center',
-    render: (row: IRowData) => {
-      const item = statusOptions.value.find((item) => item.dictValue == row.status)
-
-    }
   },
   {
-    title: '排序',
-    key: 'orderIndex',
-    width: 100,
+    label: '排序',
+    prop: 'orderIndex',
+    width: '100',
     align: 'center'
   },
   {
-    title: '创建时间',
-    key: 'createTime',
-    width: 180,
+    label: '创建时间',
+    prop: 'createTime',
+    width: '180',
     align: 'center'
   },
   {
-    title: '操作',
-    key: 'operation',
+    label: '操作',
+    prop: 'operation',
     align: 'center',
-    fixed: 'right',
-    width: 160,
-    render(row: IRowData) {
-
-    }
+    width: '160'
   }
 ]
-// 计算宽度
-const scrollX = columns.reduce((pre, cur) => {
-  if (cur.width) {
-    return pre + (cur.width as number)
-  }
-  return pre
-}, 0)
 
 // 分页
 const pageSizes = [10, 20, 30, 50]
@@ -166,9 +147,9 @@ const getDictData = async () => {
   sexOptions.value = await dictStore.getDictData('sys_user_sex')
 }
 
-onMounted(async () => {
-  getData()
+onMounted(() => {
   getDictData()
+  getData()
 })
 const data = ref<UserInfo[]>([])
 const checkData = ref<string[]>([])
@@ -178,13 +159,11 @@ const handleCheck = (rowKeys: string[]) => {
   checkData.value = rowKeys
 }
 const getData = async () => {
-  show.value = true
   const result = await getUserListApi(queryParams)
   if (result.code === 200) {
     data.value = result.data.list
     total.value = result.data.total
   }
-  show.value = false
 }
 const resetForm = () => {
   queryParams.username = ''

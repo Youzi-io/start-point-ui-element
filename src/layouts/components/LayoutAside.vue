@@ -91,6 +91,7 @@ $head-height: 54px;
     user-select: none;
 
     .el-menu-vertical:not(.el-menu--collapse) {
+      border: none;
       width: calc(v-bind(width) * 1px);
     }
   }
