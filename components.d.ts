@@ -28,6 +28,7 @@ declare module 'vue' {
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElOption: typeof import('element-plus/es')['ElOption']
+    ElPopconfirm: typeof import('element-plus/es')['ElPopconfirm']
     ElPopover: typeof import('element-plus/es')['ElPopover']
     ElRadio: typeof import('element-plus/es')['ElRadio']
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
@@ -39,9 +40,11 @@ declare module 'vue' {
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElTimePicker: typeof import('element-plus/es')['ElTimePicker']
+    ElTooltip: typeof import('element-plus/es')['ElTooltip']
     MSIcon: typeof import('./src/components/MSIcon/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ScrollBar: typeof import('./src/components/ScrollBar/index.vue')['default']
+    TableHeader: typeof import('./src/components/TableHeader/index.vue')['default']
   }
 }
