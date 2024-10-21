@@ -18,7 +18,7 @@
     </el-tooltip>
 
     <el-tooltip placement="top" trigger="hover" content="编辑选中行">
-      <el-button type="info" :disabled="props.isNoSelection" style="margin: 0 0 0 8px" @click="editClick">
+      <el-button type="primary" :disabled="props.isNoSelection" style="margin: 0 0 0 8px" @click="editClick">
         <template #icon>
           <MSIcon name="Edit" size="20"></MSIcon>
         </template>
@@ -26,18 +26,21 @@
       </el-button>
     </el-tooltip>
 
-    <el-tooltip placement="top" trigger="hover" content="删除选中行">
-      <el-popconfirm @confirm="deleteClick" title="确定删除选中记录？">
-        <template #reference>
-          <el-button type="danger" :disabled="props.isNoSelection" style="margin: 0 0 0 8px">
-            <template #icon>
-              <MSIcon name="Delete" size="20"></MSIcon>
-            </template>
-            <span> 删除 </span>
-          </el-button>
-        </template>
-      </el-popconfirm>
-    </el-tooltip>
+    <el-popconfirm title="确定删除选中记录？" @confirm="deleteClick">
+      <template #reference>
+        <div style="display: inline-block;">
+          <el-tooltip placement="top" trigger="hover" content="删除选中行">
+            <el-button type="danger" :disabled="props.isNoSelection" style="margin: 0 0 0 8px">
+              <template #icon>
+                <MSIcon name="Delete" size="20"></MSIcon>
+              </template>
+              <span> 删除 </span>
+            </el-button>
+          </el-tooltip>
+        </div>
+      </template>
+    </el-popconfirm>
+
   </div>
 </template>
 
