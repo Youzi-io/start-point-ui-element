@@ -59,8 +59,8 @@
       </template>
     </STable>
 
-    <Pagination v-model:page="queryParams.pageNum" v-model:pageSize="queryParams.pageSize" :pageSizes="pageSizes"
-      :total="total" @change-page="getData"></Pagination>
+    <SPagination v-model:page="queryParams.pageNum" v-model:pageSize="queryParams.pageSize" :pageSizes="pageSizes"
+      :total="total" @change-page="getData"></SPagination>
     <DictAdd ref="dictAddRef" @success="getData"></DictAdd>
     <DictEdit ref="dictEditRef" @success="getData"></DictEdit>
     <DictBatchEdit ref="dictBatchEditRef" @success="getData"></DictBatchEdit>
@@ -75,7 +75,7 @@ import DictAdd from './add/index.vue'
 import DictEdit from './edit/index.vue'
 import DictBatchEdit from './batchEdit/index.vue'
 import MSIcon from '@/components/MSIcon/index.vue'
-import Pagination from '@/components/Pagination/index.vue'
+import SPagination from '@/components/SPagination/index.vue'
 import { mainRouteName } from '@/permission'
 import type { DictInfo, GetDictParams } from '@/types/system/dict'
 import { batchDeleteDictApi, deleteDictApi, getDictListApi } from '@/api/system/dict'
