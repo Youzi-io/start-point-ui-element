@@ -96,7 +96,7 @@ const columns: Columns[] = [
   {
     label: '字典名称',
     prop: 'dictName',
-    width: '160',
+    minWidth: '160',
     align: 'center',
     showOverflowTooltip: true
   },
@@ -118,7 +118,7 @@ const columns: Columns[] = [
   {
     label: '备注',
     prop: 'remark',
-    width: '160',
+    minWidth: '160',
     align: 'center',
     showOverflowTooltip: true
   },
@@ -211,12 +211,6 @@ const deleteRow = async (item: IRowData) => {
       plain: true,
     })
     checkData.value = []
-    // 判断当前页数据是否已经为空，如果为空则跳转到上一页
-    if (queryParams.pageNum && queryParams.pageSize) {
-      let totalPage = Math.ceil((total.value - 1) / queryParams.pageSize)
-      let currentPage = queryParams.pageNum > totalPage ? totalPage : queryParams.pageNum
-      queryParams.pageNum = currentPage < 1 ? 1 : currentPage
-    }
     getData()
   }
 }
@@ -247,12 +241,6 @@ const batchDeleteRow = async () => {
       plain: true,
     })
     checkData.value = []
-    // 判断当前页数据是否已经为空，如果为空则跳转到上一页
-    if (queryParams.pageNum && queryParams.pageSize) {
-      let totalPage = Math.ceil((total.value - 1) / queryParams.pageSize)
-      let currentPage = queryParams.pageNum > totalPage ? totalPage : queryParams.pageNum
-      queryParams.pageNum = currentPage < 1 ? 1 : currentPage
-    }
     getData()
   }
 }
