@@ -150,7 +150,6 @@ const queryParams = reactive<GetDictParams>({
 })
 
 const statusOptions = ref<DictDataInfo[]>([])
-
 const dictStore = useDictStore()
 const getDictData = async () => {
   statusOptions.value = await dictStore.getDictData('sys_normal_disable')
