@@ -20,7 +20,7 @@ export interface DictDataInfo {
   dictOrder: number
 
   /*回显样式 */
-  listClass: 'default' | 'error' | 'primary' | 'info' | 'success' | 'warning'
+  listClass: 'primary' | 'success' | 'info' | 'warning' | 'danger'
 
   /*备注 */
   remark: string
