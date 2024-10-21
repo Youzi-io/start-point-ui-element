@@ -135,6 +135,9 @@ interface Props {
 
 <style lang="scss" scoped>
 .upload-img {
+  width: 148px;
+  height: 148px;
+
   &-hide {
     :deep(.el-upload--picture-card) {
       display: none;

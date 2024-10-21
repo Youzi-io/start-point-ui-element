@@ -43,6 +43,7 @@ declare module 'vue' {
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
+    ElUpload: typeof import('element-plus/es')['ElUpload']
     MSIcon: typeof import('./src/components/MSIcon/index.vue')['default']
     Pagination: typeof import('./src/components/Pagination/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
@@ -51,8 +52,10 @@ declare module 'vue' {
     SPagination: typeof import('./src/components/SPagination/index.vue')['default']
     STable: typeof import('./src/components/STable/index.vue')['default']
     STableHeader: typeof import('./src/components/STableHeader/index.vue')['default']
+    SUploadImg: typeof import('./src/components/SUploadImg/index.vue')['default']
     Table: typeof import('./src/components/Table/index.vue')['default']
     TableHeader: typeof import('./src/components/TableHeader/index.vue')['default']
+    UploadImg: typeof import('./src/components/UploadImg/index.vue')['default']
   }
   export interface ComponentCustomProperties {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']
