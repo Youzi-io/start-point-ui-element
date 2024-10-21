@@ -3,7 +3,8 @@
     :header-cell-style="props.headerCellStyle" :row-key="props.rowKey" :border="props.border" default-expand-all
     @selection-change="handleSelectionChange" @select-all="handleSelectAll">
     <el-table-column v-for="item in props.columns" :key="item.prop" :type="item.type" :prop="item.prop"
-      :label="item.label" :width="item.width" :align="item.align" :show-overflow-tooltip="item.showOverflowTooltip">
+      :label="item.label" :width="item.width" :min-width="item.minWidth" :align="item.align"
+      :show-overflow-tooltip="item.showOverflowTooltip">
       <template #default="scope">
         <slot v-if="item.slot" :name="item.slot" :row="scope.row"> </slot>
       </template>

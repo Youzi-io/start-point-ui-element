@@ -3,6 +3,7 @@ export interface Columns {
   prop?: string
   label?: string
   width?: string
+  minWidth?: string
   align?: string
   slot?: string
   showOverflowTooltip?: boolean
