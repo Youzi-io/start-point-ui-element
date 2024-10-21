@@ -1,112 +1,79 @@
 <template>
-  <n-modal v-model:show="show" title="编辑用户" preset="card" style="width: 500px" @ok="onSubmit">
-    <n-form
-      ref="formRef"
-      :model="formState"
-      :rules="rules"
-      label-placement="left"
-      label-width="auto"
-    >
-      <n-form-item label="用户名" path="username">
-        <n-flex vertical :size="[0, 0]" style="width: 100%">
-          <n-input v-model:value="formState.username" placeholder="请输入用户名" />
-          <span class="hint">用户名为空则默认为账号</span>
-        </n-flex>
-      </n-form-item>
+  <el-dialog v-model="show" title="编辑用户" width="500">
+    <el-form ref="formRef" :model="formData" :rules="rules" label-position="left" label-width="auto">
+      <el-form-item label="用户名" prop="username">
+        <el-input v-model="formData.username" placeholder="请输入用户名" />
+        <span class="hint">用户名为空则默认为账号</span>
+      </el-form-item>
 
-      <n-form-item label="账号" path="account">
-        <n-input v-model:value="formState.account" placeholder="请输入账号" />
-      </n-form-item>
+      <el-form-item label="账号" prop="account">
+        <el-input v-model="formData.account" placeholder="请输入账号" />
+      </el-form-item>
 
-      <n-form-item label="密码" path="password">
-        <n-flex vertical :size="[0, 0]" style="width: 100%">
-          <n-input v-model:value="formState.password" placeholder="请输入密码" />
-          <span class="hint">密码为空则默认原始密码</span>
-        </n-flex>
-      </n-form-item>
+      <el-form-item label="密码" prop="password">
+        <el-input v-model="formData.password" placeholder="请输入密码" />
+      </el-form-item>
 
-      <n-form-item label="性别" path="sex">
-        <n-radio-group v-model:value="formState.sex">
-          <n-radio v-for="item in sexOptions" :key="item.id" :value="item.dictValue">{{
+      <el-form-item label="性别" prop="sex">
+        <el-radio-group v-model="formData.sex">
+          <el-radio v-for="item in sexOptions" :key="item.id" :value="item.dictValue">{{
             item.dictTag
-          }}</n-radio>
-        </n-radio-group>
-      </n-form-item>
+          }}</el-radio>
+        </el-radio-group>
+      </el-form-item>
 
-      <n-form-item label="头像" path="avatar">
-        <n-flex vertical :size="[0, 0]" style="width: 100%">
-          <UploadImg v-model:file-data="formState.avatar" />
-          <span class="hint">删除图片时图片存储文件会被删除，请谨慎</span>
-        </n-flex>
-      </n-form-item>
+      <el-form-item label="头像" prop="avatar">
+        <SUploadImg v-model:file-data="formData.avatar" />
+      </el-form-item>
 
-      <n-form-item label="年龄" path="age">
-        <n-input-number
-          v-model:value="formState.age"
-          :min="1"
-          :max="200"
-          placeholder="请输入年龄"
-        />
-      </n-form-item>
+      <el-form-item label="年龄" prop="age">
+        <el-input-number v-model="formData.age" :min="1" :max="200" />
+      </el-form-item>
 
-      <n-form-item label="邮箱" path="email">
-        <n-input v-model:value="formState.email" placeholder="请输入邮箱" />
-      </n-form-item>
+      <el-form-item label="邮箱" prop="email">
+        <el-input v-model="formData.email" placeholder="请输入邮箱" />
+      </el-form-item>
 
-      <n-form-item label="手机号" path="phone">
-        <n-input v-model:value="formState.phone" placeholder="请输入手机号" />
-      </n-form-item>
+      <el-form-item label="手机号" prop="phone">
+        <el-input v-model="formData.phone" placeholder="请输入手机号" />
+      </el-form-item>
 
-      <n-form-item label="角色组" path="roleIdList">
-        <n-select
-          v-model:value="formState.roleIdList"
-          multiple
-          :label-field="selectFieldNames.label"
-          :value-field="selectFieldNames.value"
-          :children-field="selectFieldNames.children"
-          :options="roleOptions"
-          placeholder="请选择角色组"
-        />
-      </n-form-item>
+      <el-form-item label="角色组" prop="roleIdList">
+        <el-select v-model="formData.roleIdList" multiple placeholder="请选择角色组">
+          <el-option v-for="item in roleOptions" :key="item.id" :label="item.roleName" :value="item.id" />
+        </el-select>
+      </el-form-item>
 
-      <n-form-item label="状态" path="status">
-        <n-radio-group v-model:value="formState.status">
-          <n-radio v-for="item in statusOptions" :key="item.id" :value="item.dictValue">{{
+      <el-form-item label="状态" prop="status">
+        <el-radio-group v-model="formData.status">
+          <el-radio v-for="item in statusOptions" :key="item.id" :value="item.dictValue">{{
             item.dictTag
-          }}</n-radio>
-        </n-radio-group>
-      </n-form-item>
+          }}</el-radio>
+        </el-radio-group>
+      </el-form-item>
 
-      <n-form-item label="排序" path="orderIndex">
-        <n-input-number
-          v-model:value="formState.orderIndex"
-          :min="0"
-          :max="100"
-          placeholder="请输入排序"
-        />
-      </n-form-item>
-
-      <div>
-        <n-flex justify="end">
-          <n-button @click="show = false">取消</n-button>
-          <n-button type="primary" @click="onSubmit"> {{ submitText }} </n-button>
-        </n-flex>
-      </div>
-    </n-form>
-  </n-modal>
+      <el-form-item label="排序" prop="orderIndex">
+        <el-input-number v-model="formData.orderIndex" :min="0" :max="100" />
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <el-button @click="show = false">取消</el-button>
+      <el-button type="primary" @click="onSubmit(formRef)"> {{ submitText }} </el-button>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import { useMessage, type FormRules } from 'naive-ui'
-import UploadImg from '@/components/UploadImg/index.vue'
+import { reactive, ref, watch } from 'vue'
+import SUploadImg from '@/components/SUploadImg/index.vue'
 import type { EditUserParams } from '@/types/system/user'
 import { editUserApi, findByIdUserApi } from '@/api/system/user'
 import type { RoleInfo } from '@/types/system/role'
 import { getRoleListApi } from '@/api/system/role'
 import { md5 } from 'js-md5'
 import type { DictDataInfo } from '@/types/system/dictData'
-import { useDictStore } from '@/plugins/stores'
+import { useDictStore } from '@/stores'
+import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 
 const show = ref(false)
 const isMultiple = ref(false)
@@ -123,7 +90,7 @@ watch(
 )
 
 const formRef = ref()
-const formState = ref<EditUserParams>({
+const formData = ref<EditUserParams>({
   id: '',
   username: '',
   account: '',
@@ -137,15 +104,13 @@ const formState = ref<EditUserParams>({
   orderIndex: 1,
   roleIdList: []
 })
-const rules: FormRules = {
+const rules = reactive<FormRules<EditUserParams>>({
   account: [{ required: true, message: '账号不能为空', trigger: 'blur' }],
   orderIndex: [{ type: 'number', required: true, message: '排序不能为空', trigger: 'blur' }],
   roleIdList: [{ type: 'array', required: true, message: '角色组不能为空', trigger: 'blur' }]
-}
+})
 
-const selectFieldNames = { children: 'children', label: 'roleName', value: 'id' }
 const roleOptions = ref<RoleInfo[]>([])
-
 const statusOptions = ref<DictDataInfo[]>([])
 const sexOptions = ref<DictDataInfo[]>([])
 const dictStore = useDictStore()
@@ -165,26 +130,29 @@ const getData = async () => {
   }
   const userResult = await findByIdUserApi(idsList.value[currentIndex.value])
   if (userResult.code === 200) {
-    formState.value = userResult.data
+    formData.value = userResult.data
   }
 }
 
 const emit = defineEmits(['success'])
-const message = useMessage()
-const onSubmit = () => {
-  formRef.value
-    .validate()
-    .then(async () => {
-      let params = formState.value
-      if (formState.value.password) {
+const onSubmit = async (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  await formEl.validate(async (valid, fields) => {
+    if (valid) {
+      let params = formData.value
+      if (formData.value.password) {
         params = {
-          ...formState.value,
-          password: md5(formState.value.password).toLocaleUpperCase()
+          ...formData.value,
+          password: md5(formData.value.password).toLocaleUpperCase()
         }
       }
       const result = await editUserApi(params)
       if (result.code === 200) {
-        message.success(result.message)
+        ElMessage({
+          message: result.message,
+          type: 'success',
+          plain: true,
+        })
         emit('success')
         if (isMultiple.value) {
           show.value = false
@@ -193,16 +161,24 @@ const onSubmit = () => {
           getData()
         }
       } else {
-        message.success(result.message)
+        ElMessage({
+          message: result.message,
+          type: 'success',
+          plain: true,
+        })
       }
-    })
-    .catch((error: any) => {
-      console.log('error', error)
-    })
+    } else {
+      ElMessage({
+        message: Object.values(fields!)[0][0].message,
+        type: 'warning',
+        plain: true,
+      })
+    }
+  })
 }
 
 const formInit = () => {
-  formState.value = {
+  formData.value = {
     id: '',
     username: '',
     account: '',

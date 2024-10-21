@@ -22,22 +22,51 @@
     <STableHeader :isNoSelection="!checkData.length" @refresh-click="refresh" @add-click="addRow"
       @edit-click="batchEditRow" @delete-click="batchDeleteRow"></STableHeader>
 
-    <STable :columns="columns" :data="data">
+    <STable :columns="columns" :tableData="data" @selection-change="handleSelect">
       <template #sex="{ row }">
-        {{ row }}
+        <RenderSex :row />
+      </template>
+      <template #status="{ row }">
+        <RenderStatus :row />
+      </template>
+      <template #avatar="{ row }: { row: IRowData }">
+        <el-avatar shape="square" :size="34" :src="avatarPrefixUrl + row.avatar" />
+      </template>
+      <template #operation="{ row }">
+        <el-tooltip placement="top" trigger="hover" content="编辑">
+          <el-button type="primary" size="small" @click="editRow(row)">
+            <template #icon>
+              <MSIcon name="Edit" size="18"></MSIcon>
+            </template>
+          </el-button>
+        </el-tooltip>
+
+        <el-popconfirm title="确定删除选中记录？" placement="left" @confirm="deleteRow(row)">
+          <template #reference>
+            <div style="display: inline-block;">
+              <el-tooltip placement="top" trigger="hover" content="删除">
+                <el-button type="danger" size="small" style="margin:0 8px">
+                  <template #icon>
+                    <MSIcon name="Delete" size="18"></MSIcon>
+                  </template>
+                </el-button>
+              </el-tooltip>
+            </div>
+          </template>
+        </el-popconfirm>
       </template>
     </STable>
 
-    <!-- <Pagination v-model:page="queryParams.pageNum" v-model:pageSize="queryParams.pageSize" :pageSizes="pageSizes"
-      :total="total" @update-page="getData" @update-page-size="getData"></Pagination> -->
-    <!-- <UserAdd ref="userAddRef" @success="getData"></UserAdd> -->
-    <!-- <UserEdit ref="userEditRef" @success="getData"></UserEdit> -->
-    <!-- <UserBatchEdit ref="userBatchEditRef" @success="getData"></UserBatchEdit> -->
+    <SPagination v-model:page="queryParams.pageNum" v-model:pageSize="queryParams.pageSize" :pageSizes="pageSizes"
+      :total="total" @change-page="getData"></SPagination>
+    <UserAdd ref="userAddRef" @success="getData"></UserAdd>
+    <UserEdit ref="userEditRef" @success="getData"></UserEdit>
+    <UserBatchEdit ref="userBatchEditRef" @success="getData"></UserBatchEdit>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue'
+import { h, onMounted, reactive, ref } from 'vue'
 import { batchDeleteUserApi, deleteUserApi, getUserListApi } from '@/api/system/user'
 import STableHeader from '@/components/STableHeader/index.vue'
 import STable from '@/components/STable/index.vue';
@@ -46,11 +75,11 @@ import UserEdit from './edit/index.vue'
 import UserBatchEdit from './batchEdit/index.vue'
 import type { GetUserParams, UserInfo } from '@/types/system/user'
 import MSIcon from '@/components/MSIcon/index.vue'
-// import Pagination from '@/components/Pagination/index.vue'
+import SPagination from '@/components/SPagination/index.vue'
 import { mainRouteName } from '@/permission'
 import { useDictStore } from '@/stores'
 import type { DictDataInfo } from '@/types/system/dictData'
-import { ElMessage, type FormInstance } from 'element-plus'
+import { ElMessage, ElTag, type FormInstance } from 'element-plus'
 import type { Columns } from '@/types/components/sTable';
 
 const formRef = ref<FormInstance>()
@@ -59,19 +88,20 @@ const avatarPrefixUrl = import.meta.env.VITE_FILE_PATH_BASE_URL + '/images/'
 const columns: Columns[] = [
   {
     type: 'selection',
-    width: '50'
+    width: '50',
+    align: 'center'
   },
   {
     label: '用户名',
     prop: 'username',
-    width: '160',
+    minWidth: '160',
     align: 'center',
     showOverflowTooltip: true,
   },
   {
     label: '账号',
     prop: 'account',
-    width: '160',
+    minWidth: '160',
     align: 'center',
     showOverflowTooltip: true,
   },
@@ -79,31 +109,33 @@ const columns: Columns[] = [
     label: '性别',
     prop: 'sex',
     slot: 'sex',
-    width: '160',
+    width: '80',
     align: 'center',
   },
   {
     label: '头像',
     prop: 'avatar',
-    width: '100',
+    slot: 'avatar',
+    width: '80',
     align: 'center',
   },
   {
     label: '邮箱',
     prop: 'email',
-    width: '160',
+    minWidth: '160',
     align: 'center',
     showOverflowTooltip: true,
   },
   {
     label: '手机号',
     prop: 'phone',
-    width: '160',
+    minWidth: '160',
     align: 'center',
   },
   {
     label: '状态',
     prop: 'status',
+    slot: 'status',
     width: '80',
     align: 'center',
   },
@@ -122,6 +154,7 @@ const columns: Columns[] = [
   {
     label: '操作',
     prop: 'operation',
+    slot: 'operation',
     align: 'center',
     width: '160'
   }
@@ -147,17 +180,7 @@ const getDictData = async () => {
   sexOptions.value = await dictStore.getDictData('sys_user_sex')
 }
 
-onMounted(() => {
-  getDictData()
-  getData()
-})
-const data = ref<UserInfo[]>([])
-const checkData = ref<string[]>([])
-const handleCheck = (rowKeys: string[]) => {
-  console.log(rowKeys)
-
-  checkData.value = rowKeys
-}
+const data = ref<IRowData[]>([])
 const getData = async () => {
   const result = await getUserListApi(queryParams)
   if (result.code === 200) {
@@ -165,29 +188,56 @@ const getData = async () => {
     total.value = result.data.total
   }
 }
+
 const resetForm = () => {
   queryParams.username = ''
   queryParams.status = null
   getData()
 }
 
-const refresh = () => {
-  getData()
+/**
+ * 渲染数据过滤
+ */
+const RenderSex = ({ row }: { row: IRowData }) => {
+  const item = sexOptions.value.find((item) => item.dictValue === row.sex)
+  if (item) {
+    return h(
+      ElTag,
+      {
+        type: item ? item.listClass : 'info'
+      },
+      {
+        default: () => (item ? item.dictTag : '未知')
+      }
+    )
+  }
+}
+const RenderStatus = ({ row }: { row: IRowData }) => {
+  const item = statusOptions.value.find((item) => item.dictValue === row.status)
+  if (item) {
+    return h(
+      ElTag,
+      {
+        type: item ? item.listClass : 'info'
+      },
+      {
+        default: () => (item ? item.dictTag : '未知')
+      }
+    )
+  }
 }
 
-const userAddRef = ref()
-const addRow = () => {
-  userAddRef.value.showModal()
+/**
+ * 表格操作
+ */
+const checkData = ref<string[]>([])
+const handleSelect = (dataList: IRowData[]) => {
+  checkData.value = dataList.map(item => item.id)
 }
 
 const userEditRef = ref()
 const editRow = (item: IRowData) => {
   userEditRef.value.showModal(item.id)
-}
-
-const userBatchEditRef = ref()
-const batchEditRow = () => {
-  userBatchEditRef.value.showModal(checkData.value)
 }
 
 const deleteRow = async (item: IRowData) => {
@@ -199,15 +249,27 @@ const deleteRow = async (item: IRowData) => {
       plain: true,
     })
     checkData.value = []
-    // 判断当前页数据是否已经为空，如果为空则跳转到上一页
-    if (queryParams.pageNum && queryParams.pageSize) {
-      let totalPage = Math.ceil((total.value - 1) / queryParams.pageSize)
-      let currentPage = queryParams.pageNum > totalPage ? totalPage : queryParams.pageNum
-      queryParams.pageNum = currentPage < 1 ? 1 : currentPage
-    }
     getData()
   }
 }
+
+/**
+ * 表头操作栏
+ */
+const refresh = () => {
+  getData()
+}
+
+const userAddRef = ref()
+const addRow = () => {
+  userAddRef.value.showModal()
+}
+
+const userBatchEditRef = ref()
+const batchEditRow = () => {
+  userBatchEditRef.value.showModal(checkData.value)
+}
+
 const batchDeleteRow = async () => {
   const result = await batchDeleteUserApi(checkData.value)
   if (result.code === 200) {
@@ -217,15 +279,14 @@ const batchDeleteRow = async () => {
       plain: true,
     })
     checkData.value = []
-    // 判断当前页数据是否已经为空，如果为空则跳转到上一页
-    if (queryParams.pageNum && queryParams.pageSize) {
-      let totalPage = Math.ceil((total.value - 1) / queryParams.pageSize)
-      let currentPage = queryParams.pageNum > totalPage ? totalPage : queryParams.pageNum
-      queryParams.pageNum = currentPage < 1 ? 1 : currentPage
-    }
     getData()
   }
 }
+
+onMounted(() => {
+  getDictData()
+  getData()
+})
 
 defineOptions({
   name: `${mainRouteName}-user`
