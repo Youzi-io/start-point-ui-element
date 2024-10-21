@@ -57,7 +57,7 @@ const formData = ref<AddDictDataParams>({
   dictTag: '',
   dictValue: '',
   dictOrder: 1,
-  listClass: 'info',
+  listClass: 'primary',
   status: '0',
   remark: ''
 })
@@ -73,9 +73,7 @@ const dictStore = useDictStore()
 const getDictData = async () => {
   listClassOptions.value = await dictStore.getDictData('sys_style_type')
   statusOptions.value = await dictStore.getDictData('sys_normal_disable')
-  formData.value.listClass = listClassOptions.value
-    ? (listClassOptions.value[0].dictValue as ListClass)
-    : 'info'
+  formData.value.listClass = 'primary'
   formData.value.status = statusOptions.value ? statusOptions.value[0].dictValue : ''
 }
 
@@ -116,7 +114,7 @@ const formInit = () => {
     dictTag: '',
     dictValue: '',
     dictOrder: 1,
-    listClass: 'info',
+    listClass: 'primary',
     status: '0',
     remark: ''
   }

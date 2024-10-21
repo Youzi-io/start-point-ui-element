@@ -58,7 +58,7 @@ const formData = ref<EditDictDataParams>({
   dictTag: '',
   dictValue: '',
   dictOrder: 1,
-  listClass: 'info',
+  listClass: 'primary',
   status: '0',
   remark: ''
 })
@@ -121,7 +121,7 @@ const formInit = () => {
     dictTag: '',
     dictValue: '',
     dictOrder: 1,
-    listClass: 'info',
+    listClass: 'primary',
     status: '0',
     remark: ''
   }

@@ -27,7 +27,7 @@
         <el-radio-group v-model="formData.status">
           <el-radio v-for="item in statusOptions" :key="item.id" :value="item.dictValue">{{
             item.dictTag
-          }}</el-radio>
+            }}</el-radio>
         </el-radio-group>
       </el-form-item>
 
@@ -70,7 +70,7 @@ const formData = ref<EditDictDataParams>({
   dictTag: '',
   dictValue: '',
   dictOrder: 1,
-  listClass: 'info',
+  listClass: 'primary',
   status: '0',
   remark: ''
 })
@@ -138,7 +138,7 @@ const formInit = () => {
     dictTag: '',
     dictValue: '',
     dictOrder: 1,
-    listClass: 'info',
+    listClass: 'primary',
     status: '0',
     remark: ''
   }
