@@ -20,7 +20,7 @@ export interface DictDataInfo {
   dictOrder: number
 
   /*回显样式 */
-  listClass: 'primary' | 'success' | 'info' | 'warning' | 'danger'
+  listClass: ListClass
 
   /*备注 */
   remark: string
@@ -37,6 +37,8 @@ export interface DictDataInfo {
   /*修改时间 */
   updateTime?: string
 }
+
+export type ListClass = 'primary' | 'success' | 'info' | 'warning' | 'danger'
 
 export interface DictDataInfoRes extends DictDataInfo {}
 
