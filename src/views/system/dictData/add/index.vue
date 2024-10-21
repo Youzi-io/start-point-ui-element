@@ -27,7 +27,7 @@
         <el-radio-group v-model="formData.status">
           <el-radio v-for="item in statusOptions" :key="item.id" :value="item.dictValue">{{
             item.dictTag
-            }}</el-radio>
+          }}</el-radio>
         </el-radio-group>
       </el-form-item>
 
@@ -44,7 +44,7 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import type { AddDictDataParams, DictDataInfo, ListClass } from '@/types/system/dictData'
+import type { AddDictDataParams, DictDataInfo } from '@/types/system/dictData'
 import { addDictDataApi } from '@/api/system/dictData'
 import { useDictStore } from '@/stores'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus';
