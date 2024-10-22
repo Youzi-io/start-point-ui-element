@@ -6,10 +6,10 @@ import { useLoadingStore } from './stores';
 
 const { getLocale, locale } = useLocale()
 const loadingStore = useLoadingStore()
-loadingStore.isFullscreenLoading(true)
+loadingStore.setFullscreenLoading(true)
 onMounted(() => {
   setTimeout(() => {
-    loadingStore.isFullscreenLoading(false)
+    loadingStore.setFullscreenLoading(false)
   }, 1000)
 })
 

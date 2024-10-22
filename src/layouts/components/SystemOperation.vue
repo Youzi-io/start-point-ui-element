@@ -53,12 +53,12 @@ const timeInterval = ref<number>(0)
 
 const { cutoverLang } = useLocale()
 const switchLanguage = (option: LangList) => {
-  loadingStore.isFullscreenLoading(true)
+  loadingStore.setFullscreenLoading(true)
   setTimeout(() => {
     cutoverLang(option.value)
   }, 500)
   setTimeout(() => {
-    loadingStore.isFullscreenLoading(false)
+    loadingStore.setFullscreenLoading(false)
   }, 1000)
 }
 
