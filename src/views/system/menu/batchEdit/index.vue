@@ -1,84 +1,86 @@
 <template>
   <el-dialog v-model="show" title="编辑菜单" width="500">
-    <el-form ref="formRef" :model="formData" :rules="rules" label-position="left" label-width="auto">
-      <el-form-item label="上级菜单" prop="parentId">
-        <el-tree-select v-model="formData.parentId" :data="treeData" node-key="id" :props="defaultProps" check-strictly
-          :render-after-expand="false" />
-        <span class="hint">没有上级菜单则为空</span>
-      </el-form-item>
+    <el-scrollbar height="58vh">
+      <el-form ref="formRef" :model="formData" :rules="rules" label-position="left" label-width="auto">
+        <el-form-item label="上级菜单" prop="parentId">
+          <el-tree-select v-model="formData.parentId" :data="treeData" node-key="id" :props="defaultProps"
+            check-strictly :render-after-expand="false" />
+          <span class="hint">没有上级菜单则为空</span>
+        </el-form-item>
 
-      <el-form-item label="菜单类型" prop="type">
-        <el-radio-group v-model="formData.type">
-          <el-radio v-for="item in routesTypeOptions" :key="item.id" :value="item.dictValue">{{
-            item.dictTag
-          }}</el-radio>
-        </el-radio-group>
-      </el-form-item>
+        <el-form-item label="菜单类型" prop="type">
+          <el-radio-group v-model="formData.type">
+            <el-radio v-for="item in routesTypeOptions" :key="item.id" :value="item.dictValue">{{
+              item.dictTag
+              }}</el-radio>
+          </el-radio-group>
+        </el-form-item>
 
-      <el-form-item label="页面标题" prop="title">
-        <el-input v-model="formData.title" placeholder="请输入页面标题" />
-      </el-form-item>
+        <el-form-item label="页面标题" prop="title">
+          <el-input v-model="formData.title" placeholder="请输入页面标题" />
+        </el-form-item>
 
-      <el-form-item label="路由名称" prop="routesName">
-        <el-input v-model="formData.routesName" placeholder="请输入路由名称" />
-      </el-form-item>
+        <el-form-item label="路由名称" prop="routesName">
+          <el-input v-model="formData.routesName" placeholder="请输入路由名称" />
+        </el-form-item>
 
-      <el-form-item ref="icon" label="图标" prop="icon" v-show="formData.type !== MenuTypeEnum.Button">
-        <el-input v-model:value="formData.icon" placeholder="请输入图标，仅支持material图标" style="width: 90%">
-          <template #append>
-            <el-button type="primary" style="width: 10%" @click="searchIcon">
-              <template #icon>
-                <MSIcon name="Search" size="20"></MSIcon>
-              </template>
-            </el-button>
-          </template>
-        </el-input>
-      </el-form-item>
+        <el-form-item ref="icon" label="图标" prop="icon" v-show="formData.type !== MenuTypeEnum.Button">
+          <el-input v-model:value="formData.icon" placeholder="请输入图标，仅支持material图标" style="width: 90%">
+            <template #append>
+              <el-button type="primary" style="width: 10%" @click="searchIcon">
+                <template #icon>
+                  <MSIcon name="Search" size="20"></MSIcon>
+                </template>
+              </el-button>
+            </template>
+          </el-input>
+        </el-form-item>
 
-      <el-form-item label="路由地址" prop="fullPath">
-        <el-input v-model="formData.fullPath" placeholder="需要填写完整路径，如：/system/sysRoutes/list" />
-        <span class="hint">将注册为web端路由地址，同时作为server端API验权使用</span>
-      </el-form-item>
+        <el-form-item label="路由地址" prop="fullPath">
+          <el-input v-model="formData.fullPath" placeholder="需要填写完整路径，如：/system/sysRoutes/list" />
+          <span class="hint">将注册为web端路由地址，同时作为server端API验权使用</span>
+        </el-form-item>
 
-      <el-form-item label="组件路径" prop="componentPath" v-show="formData.type === MenuTypeEnum.Menu">
-        <el-input v-model="formData.componentPath" placeholder="请输入组件路径" />
-        <span class="hint">web端组件路径，例如:/views/dashboard/index.vue</span>
-      </el-form-item>
+        <el-form-item label="组件路径" prop="componentPath" v-show="formData.type === MenuTypeEnum.Menu">
+          <el-input v-model="formData.componentPath" placeholder="请输入组件路径" />
+          <span class="hint">web端组件路径，例如:/views/dashboard/index.vue</span>
+        </el-form-item>
 
-      <el-form-item label="显示状态" prop="showStatus" v-show="formData.type !== MenuTypeEnum.Button">
-        <el-radio-group v-model="formData.showStatus">
-          <el-radio value="0">显示</el-radio>
-          <el-radio value="1">隐藏</el-radio>
-        </el-radio-group>
-      </el-form-item>
+        <el-form-item label="显示状态" prop="showStatus" v-show="formData.type !== MenuTypeEnum.Button">
+          <el-radio-group v-model="formData.showStatus">
+            <el-radio value="0">显示</el-radio>
+            <el-radio value="1">隐藏</el-radio>
+          </el-radio-group>
+        </el-form-item>
 
-      <el-form-item label="是否为外链" prop="isExternalLink" v-show="formData.type !== MenuTypeEnum.Button">
-        <el-radio-group v-model="formData.isExternalLink">
-          <el-radio value="0">是</el-radio>
-          <el-radio value="1">否</el-radio>
-        </el-radio-group>
-      </el-form-item>
+        <el-form-item label="是否为外链" prop="isExternalLink" v-show="formData.type !== MenuTypeEnum.Button">
+          <el-radio-group v-model="formData.isExternalLink">
+            <el-radio value="0">是</el-radio>
+            <el-radio value="1">否</el-radio>
+          </el-radio-group>
+        </el-form-item>
 
-      <el-form-item label="是否缓存" prop="keepAlive" v-show="formData.type === MenuTypeEnum.Menu">
-        <el-radio-group v-model="formData.keepAlive">
-          <el-radio v-for="item in keepAliveOptions" :key="item.id" :value="item.dictValue">{{
-            item.dictTag
-          }}</el-radio>
-        </el-radio-group>
-      </el-form-item>
+        <el-form-item label="是否缓存" prop="keepAlive" v-show="formData.type === MenuTypeEnum.Menu">
+          <el-radio-group v-model="formData.keepAlive">
+            <el-radio v-for="item in keepAliveOptions" :key="item.id" :value="item.dictValue">{{
+              item.dictTag
+              }}</el-radio>
+          </el-radio-group>
+        </el-form-item>
 
-      <el-form-item label="状态" prop="status">
-        <el-radio-group v-model="formData.status">
-          <el-radio v-for="item in statusOptions" :key="item.id" :value="item.dictValue">{{
-            item.dictTag
-          }}</el-radio>
-        </el-radio-group>
-      </el-form-item>
+        <el-form-item label="状态" prop="status">
+          <el-radio-group v-model="formData.status">
+            <el-radio v-for="item in statusOptions" :key="item.id" :value="item.dictValue">{{
+              item.dictTag
+              }}</el-radio>
+          </el-radio-group>
+        </el-form-item>
 
-      <el-form-item label="排序" prop="orderIndex">
-        <el-input-number v-model="formData.orderIndex" :min="0" :max="100" />
-      </el-form-item>
-    </el-form>
+        <el-form-item label="排序" prop="orderIndex">
+          <el-input-number v-model="formData.orderIndex" :min="0" :max="100" />
+        </el-form-item>
+      </el-form>
+    </el-scrollbar>
     <template #footer>
       <el-button @click="show = false">取消</el-button>
       <el-button type="primary" @click="onSubmit(formRef)"> {{ submitText }} </el-button>

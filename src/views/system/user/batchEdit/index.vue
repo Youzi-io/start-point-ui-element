@@ -1,65 +1,67 @@
 <template>
   <el-dialog v-model="show" title="编辑用户" width="500">
-    <el-form ref="formRef" :model="formData" :rules="rules" label-position="left" label-width="auto">
-      <el-form-item label="用户名" prop="username">
-        <el-input v-model="formData.username" placeholder="请输入用户名" />
-        <span class="hint">用户名为空则默认为账号</span>
-      </el-form-item>
+    <el-scrollbar height="58vh">
+      <el-form ref="formRef" :model="formData" :rules="rules" label-position="left" label-width="auto">
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model="formData.username" placeholder="请输入用户名" />
+          <span class="hint">用户名为空则默认为账号</span>
+        </el-form-item>
 
-      <el-form-item label="账号" prop="account">
-        <el-input v-model="formData.account" placeholder="请输入账号" />
-      </el-form-item>
+        <el-form-item label="账号" prop="account">
+          <el-input v-model="formData.account" placeholder="请输入账号" />
+        </el-form-item>
 
-      <el-form-item label="密码" prop="password">
-        <el-input v-model="formData.password" placeholder="请输入密码" />
-      </el-form-item>
+        <el-form-item label="密码" prop="password">
+          <el-input v-model="formData.password" placeholder="请输入密码" />
+        </el-form-item>
 
-      <el-form-item label="性别" prop="sex">
-        <el-radio-group v-model="formData.sex">
-          <el-radio v-for="item in sexOptions" :key="item.id" :value="item.dictValue">{{
-            item.dictTag
-          }}</el-radio>
-        </el-radio-group>
-      </el-form-item>
+        <el-form-item label="性别" prop="sex">
+          <el-radio-group v-model="formData.sex">
+            <el-radio v-for="item in sexOptions" :key="item.id" :value="item.dictValue">{{
+              item.dictTag
+              }}</el-radio>
+          </el-radio-group>
+        </el-form-item>
 
-      <el-form-item label="头像" prop="avatar">
-        <SUploadImg v-model:file-data="formData.avatar" />
-      </el-form-item>
+        <el-form-item label="头像" prop="avatar">
+          <SUploadImg v-model:file-data="formData.avatar" />
+        </el-form-item>
 
-      <el-form-item label="年龄" prop="age">
-        <el-input-number v-model="formData.age" :min="1" :max="200" />
-      </el-form-item>
+        <el-form-item label="年龄" prop="age">
+          <el-input-number v-model="formData.age" :min="1" :max="200" />
+        </el-form-item>
 
-      <el-form-item label="邮箱" prop="email">
-        <el-input v-model="formData.email" placeholder="请输入邮箱" />
-      </el-form-item>
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="formData.email" placeholder="请输入邮箱" />
+        </el-form-item>
 
-      <el-form-item label="手机号" prop="phone">
-        <el-input v-model="formData.phone" placeholder="请输入手机号" />
-      </el-form-item>
+        <el-form-item label="手机号" prop="phone">
+          <el-input v-model="formData.phone" placeholder="请输入手机号" />
+        </el-form-item>
 
-      <el-form-item label="角色组" prop="roleIdList">
-        <el-select v-model="formData.roleIdList" multiple placeholder="请选择角色组">
-          <el-option v-for="item in roleOptions" :key="item.id" :label="item.roleName" :value="item.id" />
-        </el-select>
-      </el-form-item>
+        <el-form-item label="角色组" prop="roleIdList">
+          <el-select v-model="formData.roleIdList" multiple placeholder="请选择角色组">
+            <el-option v-for="item in roleOptions" :key="item.id" :label="item.roleName" :value="item.id" />
+          </el-select>
+        </el-form-item>
 
-      <el-form-item label="状态" prop="status">
-        <el-radio-group v-model="formData.status">
-          <el-radio v-for="item in statusOptions" :key="item.id" :value="item.dictValue">{{
-            item.dictTag
-          }}</el-radio>
-        </el-radio-group>
-      </el-form-item>
+        <el-form-item label="状态" prop="status">
+          <el-radio-group v-model="formData.status">
+            <el-radio v-for="item in statusOptions" :key="item.id" :value="item.dictValue">{{
+              item.dictTag
+              }}</el-radio>
+          </el-radio-group>
+        </el-form-item>
 
-      <el-form-item label="排序" prop="orderIndex">
-        <el-input-number v-model="formData.orderIndex" :min="0" :max="100" />
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <el-button @click="show = false">取消</el-button>
-      <el-button type="primary" @click="onSubmit(formRef)"> {{ submitText }} </el-button>
-    </template>
+        <el-form-item label="排序" prop="orderIndex">
+          <el-input-number v-model="formData.orderIndex" :min="0" :max="100" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="show = false">取消</el-button>
+        <el-button type="primary" @click="onSubmit(formRef)"> {{ submitText }} </el-button>
+      </template>
+    </el-scrollbar>
   </el-dialog>
 </template>
 

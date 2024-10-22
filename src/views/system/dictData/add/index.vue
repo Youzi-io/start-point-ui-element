@@ -1,40 +1,42 @@
 <template>
   <el-dialog v-model="show" title="添加字典数据" width="500">
-    <el-form ref="formRef" :model="formData" :rules="rules" label-position="left" label-width="auto">
-      <el-form-item label="字典类型" prop="dictType">
-        <el-input v-model="formData.dictType" disabled placeholder="请输入字典类型" />
-      </el-form-item>
+    <el-scrollbar height="58vh">
+      <el-form ref="formRef" :model="formData" :rules="rules" label-position="left" label-width="auto">
+        <el-form-item label="字典类型" prop="dictType">
+          <el-input v-model="formData.dictType" disabled placeholder="请输入字典类型" />
+        </el-form-item>
 
-      <el-form-item label="字典标签" prop="dictTag">
-        <el-input v-model="formData.dictTag" placeholder="请输入字典标签" />
-      </el-form-item>
+        <el-form-item label="字典标签" prop="dictTag">
+          <el-input v-model="formData.dictTag" placeholder="请输入字典标签" />
+        </el-form-item>
 
-      <el-form-item label="字典键值" prop="dictValue">
-        <el-input v-model="formData.dictValue" placeholder="请输入字典键值" />
-      </el-form-item>
+        <el-form-item label="字典键值" prop="dictValue">
+          <el-input v-model="formData.dictValue" placeholder="请输入字典键值" />
+        </el-form-item>
 
-      <el-form-item label="字典排序" prop="dictOrder">
-        <el-input-number v-model="formData.dictOrder" :min="0" :max="100" />
-      </el-form-item>
+        <el-form-item label="字典排序" prop="dictOrder">
+          <el-input-number v-model="formData.dictOrder" :min="0" :max="100" />
+        </el-form-item>
 
-      <el-form-item label="回显样式" prop="listClass">
-        <el-select v-model="formData.listClass" placeholder="请选择回显样式" style="width: 140px">
-          <el-option v-for="item in listClassOptions" :key="item.id" :label="item.dictTag" :value="item.dictValue" />
-        </el-select>
-      </el-form-item>
+        <el-form-item label="回显样式" prop="listClass">
+          <el-select v-model="formData.listClass" placeholder="请选择回显样式" style="width: 140px">
+            <el-option v-for="item in listClassOptions" :key="item.id" :label="item.dictTag" :value="item.dictValue" />
+          </el-select>
+        </el-form-item>
 
-      <el-form-item label="状态" prop="status">
-        <el-radio-group v-model="formData.status">
-          <el-radio v-for="item in statusOptions" :key="item.id" :value="item.dictValue">{{
-            item.dictTag
-            }}</el-radio>
-        </el-radio-group>
-      </el-form-item>
+        <el-form-item label="状态" prop="status">
+          <el-radio-group v-model="formData.status">
+            <el-radio v-for="item in statusOptions" :key="item.id" :value="item.dictValue">{{
+              item.dictTag
+              }}</el-radio>
+          </el-radio-group>
+        </el-form-item>
 
-      <el-form-item label="备注" prop="remark">
-        <el-input v-model="formData.remark" type="textarea" placeholder="请输入备注" />
-      </el-form-item>
-    </el-form>
+        <el-form-item label="备注" prop="remark">
+          <el-input v-model="formData.remark" type="textarea" placeholder="请输入备注" />
+        </el-form-item>
+      </el-form>
+    </el-scrollbar>
     <template #footer>
       <el-button @click="show = false">取消</el-button>
       <el-button type="primary" @click="onSubmit(formRef)"> 保存 </el-button>
