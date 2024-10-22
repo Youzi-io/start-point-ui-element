@@ -21,8 +21,8 @@ router.beforeEach(async (to) => {
 
   if (userStore.token) {
     const firstRoutes = getFirstDynamicRoutes()
-    if (!permissionStore.isAddRoutes) {
-      permissionStore.isAddRoutes = true
+    if (permissionStore.isFirst) {
+      permissionStore.setIsFinite(false)
       await userStore.getUserInfo()
       await permissionStore.getRoutes()
       await addRoutes(permissionStore.menuRouters, mainRouteName)
