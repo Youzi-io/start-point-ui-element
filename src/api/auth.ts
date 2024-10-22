@@ -42,7 +42,7 @@ export function getUserInfoApi() {
     },
     {
       showCodeMessage: true,
-      loading: true
+      fullscreenLoading: true
     }
   )
 }
@@ -56,7 +56,7 @@ export function getRoutesApi() {
     },
     {
       showCodeMessage: true,
-      loading: true
+      fullscreenLoading: true
     }
   )
 }
@@ -69,7 +69,8 @@ export function logout() {
       method: 'get'
     },
     {
-      showCodeMessage: true
+      showCodeMessage: true,
+      fullscreenLoading: true
     }
   )
 }
