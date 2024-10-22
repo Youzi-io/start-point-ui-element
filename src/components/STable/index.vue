@@ -1,5 +1,5 @@
 <template>
-  <el-table v-loading="props.loading" :data="props.tableData" style="width: 100%"
+  <el-table v-loading="props.loading ? loadingStore.loading : false" :data="props.tableData" style="width: 100%"
     :header-cell-style="props.headerCellStyle" :row-key="props.rowKey" :border="props.border"
     :default-expand-all="defaultExpandAll" @selection-change="handleSelectionChange" @select-all="handleSelectAll">
     <el-table-column v-for="item in props.columns" :key="item.prop" :type="item.type" :prop="item.prop"
@@ -13,7 +13,10 @@
 </template>
 
 <script lang="ts" setup generic="T">
+import { useLoadingStore } from '@/stores';
 import type { Columns } from '@/types/components/sTable';
+
+const loadingStore = useLoadingStore()
 
 const props = withDefaults(defineProps<Props<T>>(), {
   rowKey: 'id',
