@@ -6,5 +6,6 @@
 // biome-ignore lint: disable
 export {}
 declare global {
+  const ElLoading: typeof import('element-plus/es')['ElLoading']
   const ElTag: typeof import('element-plus/es')['ElTag']
 }
