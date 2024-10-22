@@ -19,11 +19,16 @@ const Api = {
 }
 
 export function getRoleListApi(params: GetRoleParams) {
-  return createAxios<PageInfo<RoleInfoRes>>({
-    url: Api.list,
-    method: 'get',
-    params
-  })
+  return createAxios<PageInfo<RoleInfoRes>>(
+    {
+      url: Api.list,
+      method: 'get',
+      params
+    },
+    {
+      loading: true
+    }
+  )
 }
 
 export function addRoleApi(data: AddRoleParams) {

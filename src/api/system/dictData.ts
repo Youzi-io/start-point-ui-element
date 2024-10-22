@@ -20,11 +20,16 @@ const Api = {
 }
 
 export function getDictDataListApi(params: GetDictDataParams) {
-  return createAxios<PageInfo<DictDataInfoRes>>({
-    url: Api.list,
-    method: 'get',
-    params
-  })
+  return createAxios<PageInfo<DictDataInfoRes>>(
+    {
+      url: Api.list,
+      method: 'get',
+      params
+    },
+    {
+      loading: true
+    }
+  )
 }
 
 export function addDictDataApi(data: AddDictDataParams) {

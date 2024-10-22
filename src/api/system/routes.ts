@@ -20,11 +20,16 @@ const Api = {
 }
 
 export function getRoutesListApi(params: GetRoutesParams) {
-  return createAxios<PageInfo<RoutesInfoRes>>({
-    url: Api.list,
-    method: 'get',
-    params
-  })
+  return createAxios<PageInfo<RoutesInfoRes>>(
+    {
+      url: Api.list,
+      method: 'get',
+      params
+    },
+    {
+      loading: true
+    }
+  )
 }
 
 export function getParentRoutesListApi() {

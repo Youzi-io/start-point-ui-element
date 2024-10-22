@@ -13,11 +13,16 @@ const Api = {
 }
 
 export function getUserListApi(params: GetUserParams) {
-  return createAxios<PageInfo<UserInfoRes>>({
-    url: Api.list,
-    method: 'get',
-    params
-  })
+  return createAxios<PageInfo<UserInfoRes>>(
+    {
+      url: Api.list,
+      method: 'get',
+      params
+    },
+    {
+      loading: true
+    }
+  )
 }
 
 export function addUserApi(data: AddUserParams) {
