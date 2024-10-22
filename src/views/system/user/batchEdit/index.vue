@@ -19,7 +19,7 @@
           <el-radio-group v-model="formData.sex">
             <el-radio v-for="item in sexOptions" :key="item.id" :value="item.dictValue">{{
               item.dictTag
-              }}</el-radio>
+            }}</el-radio>
           </el-radio-group>
         </el-form-item>
 
@@ -49,7 +49,7 @@
           <el-radio-group v-model="formData.status">
             <el-radio v-for="item in statusOptions" :key="item.id" :value="item.dictValue">{{
               item.dictTag
-              }}</el-radio>
+            }}</el-radio>
           </el-radio-group>
         </el-form-item>
 
@@ -57,11 +57,11 @@
           <el-input-number v-model="formData.orderIndex" :min="0" :max="100" />
         </el-form-item>
       </el-form>
-      <template #footer>
-        <el-button @click="show = false">取消</el-button>
-        <el-button type="primary" @click="onSubmit(formRef)"> {{ submitText }} </el-button>
-      </template>
     </el-scrollbar>
+    <template #footer>
+      <el-button @click="show = false">取消</el-button>
+      <el-button type="primary" @click="onSubmit(formRef)"> {{ submitText }} </el-button>
+    </template>
   </el-dialog>
 </template>
 
