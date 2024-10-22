@@ -100,12 +100,6 @@ const columns: Columns[] = [
     label: '页面标题',
     prop: 'title',
     width: '180',
-    showOverflowTooltip: true
-  },
-  {
-    label: '路由地址',
-    prop: 'fullPath',
-    width: '200',
     align: 'center',
     showOverflowTooltip: true
   },
@@ -117,10 +111,17 @@ const columns: Columns[] = [
     align: 'center',
   },
   {
+    label: '路由地址',
+    prop: 'fullPath',
+    minWidth: '200',
+    align: 'center',
+    showOverflowTooltip: true
+  },
+  {
     label: '类型',
     prop: 'type',
     slot: 'type',
-    width: '100',
+    minWidth: '100',
     align: 'center',
   },
   {
