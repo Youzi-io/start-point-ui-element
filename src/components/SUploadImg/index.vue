@@ -46,7 +46,7 @@ const uploadConfig = reactive({
 watch(
   () => fileData.value,
   (val) => {
-    if (!fileData.value) return
+    if (!fileData.value) return fileList.value = []
     if (Array.isArray(fileData.value)) {
       fileList.value = []
       fileData.value.forEach((item) => {
@@ -105,6 +105,8 @@ const handlePreview = (uploadFile: UploadFile) => {
 
 // 删除图片
 const handleRemove = async (uploadFile: UploadFile, uploadFiles: UploadFiles) => {
+  fileList.value = fileList.value.filter(item => item.name !== uploadFile.name)
+  handeChange(uploadFile, uploadFiles)
   await deleteImgApi(uploadFile.name)
 }
 
