@@ -22,7 +22,7 @@
     <STableHeader :isNoSelection="!checkData.length" @refresh-click="refresh" @add-click="addRow"
       @edit-click="batchEditRow" @delete-click="batchDeleteRow"></STableHeader>
 
-    <STable :columns="columns" :tableData="data" @selection-change="handleSelect">
+    <STable loading :columns="columns" :tableData="data" @selection-change="handleSelect">
       <template #sex="{ row }">
         <RenderSex :row />
       </template>

@@ -26,7 +26,7 @@
     <STableHeader :isNoSelection="!checkData.length" @refresh-click="refresh" @add-click="addRow"
       @edit-click="batchEditRow" @delete-click="batchDeleteRow"></STableHeader>
 
-    <STable :columns="columns" :table-data="data" @selection-change="handleSelect">
+    <STable loading :columns="columns" :table-data="data" @selection-change="handleSelect">
       <template #icon="{ row }: { row: IRowData }">
         <MSIcon :name="row.icon!" size="20"></MSIcon>
       </template>
@@ -76,6 +76,7 @@ import { onMounted, reactive, ref, h } from 'vue'
 import type { GetRoutesParams, RoutesInfo } from '@/types/system/routes'
 import { getRoutesListApi, deleteRoutesApi, batchDeleteRoutesApi } from '@/api/system/routes'
 import STableHeader from '@/components/STableHeader/index.vue'
+import STable from '@/components/STable/index.vue';
 import MenuAdd from './add/index.vue'
 import MenuEdit from './edit/index.vue'
 import MenuBatchEdit from './batchEdit/index.vue'

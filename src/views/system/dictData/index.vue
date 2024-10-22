@@ -28,7 +28,7 @@
     <STableHeader :isNoSelection="!checkData.length" @refresh-click="refresh" @add-click="addRow"
       @edit-click="batchEditRow" @delete-click="batchDeleteRow"></STableHeader>
 
-    <STable :columns="columns" :table-data="data" @selection-change="handleSelect">
+    <STable loading :columns="columns" :table-data="data" @selection-change="handleSelect">
       <template #status="{ row }">
         <RenderStatus :row />
       </template>

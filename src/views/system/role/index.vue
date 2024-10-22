@@ -26,7 +26,7 @@
     <STableHeader :isNoSelection="!checkData.length" @refresh-click="refresh" @add-click="addRow"
       @edit-click="batchEditRow" @delete-click="batchDeleteRow"></STableHeader>
 
-    <STable :columns="columns" :table-data="data" @selection-change="handleSelect">
+    <STable loading :columns="columns" :table-data="data" @selection-change="handleSelect">
       <template #status="{ row }">
         <RenderStatus :row />
       </template>
@@ -68,6 +68,7 @@ import { onMounted, reactive, ref, h } from 'vue'
 import { batchDeleteRoleApi, deleteRoleApi, getRoleListApi } from '@/api/system/role'
 import type { GetRoleParams, RoleInfo } from '@/types/system/role'
 import STableHeader from '@/components/STableHeader/index.vue'
+import STable from '@/components/STable/index.vue';
 import RoleAdd from './add/index.vue'
 import RoleEdit from './edit/index.vue'
 import RoleBatchEdit from './batchEdit/index.vue'
