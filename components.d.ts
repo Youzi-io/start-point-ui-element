@@ -44,6 +44,7 @@ declare module 'vue' {
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     ElTree: typeof import('element-plus/es')['ElTree']
+    ElTreeSelect: typeof import('element-plus/es')['ElTreeSelect']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     MSIcon: typeof import('./src/components/MSIcon/index.vue')['default']
     Pagination: typeof import('./src/components/Pagination/index.vue')['default']
