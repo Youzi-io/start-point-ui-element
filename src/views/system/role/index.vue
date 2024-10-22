@@ -58,8 +58,8 @@
     <SPagination v-model:page="queryParams.pageNum" v-model:pageSize="queryParams.pageSize" :pageSizes="pageSizes"
       :total="total" @change-page="getData"></SPagination>
     <RoleAdd ref="roleAddRef" @success="getData"></RoleAdd>
-    <!-- <RoleEdit ref="roleEditRef" @success="getData"></RoleEdit> -->
-    <!-- <RoleBatchEdit ref="roleBatchEditRef" @success="getData"></RoleBatchEdit> -->
+    <RoleEdit ref="roleEditRef" @success="getData"></RoleEdit>
+    <RoleBatchEdit ref="roleBatchEditRef" @success="getData"></RoleBatchEdit>
   </div>
 </template>
 
@@ -91,13 +91,13 @@ const columns: Columns[] = [
   {
     label: '角色名称',
     prop: 'roleName',
-    width: '180',
+    minWidth: '180',
     showOverflowTooltip: true
   },
   {
     label: '权限字符',
     prop: 'roleKey',
-    width: '200',
+    minWidth: '200',
     align: 'center',
     showOverflowTooltip: true
   },
