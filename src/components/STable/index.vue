@@ -1,7 +1,7 @@
 <template>
   <el-table v-loading="props.loading" :data="props.tableData" style="width: 100%"
-    :header-cell-style="props.headerCellStyle" :row-key="props.rowKey" :border="props.border" default-expand-all
-    @selection-change="handleSelectionChange" @select-all="handleSelectAll">
+    :header-cell-style="props.headerCellStyle" :row-key="props.rowKey" :border="props.border"
+    :default-expand-all="defaultExpandAll" @selection-change="handleSelectionChange" @select-all="handleSelectAll">
     <el-table-column v-for="item in props.columns" :key="item.prop" :type="item.type" :prop="item.prop"
       :label="item.label" :width="item.width" :min-width="item.minWidth" :align="item.align"
       :show-overflow-tooltip="item.showOverflowTooltip">
@@ -17,7 +17,8 @@ import type { Columns } from '@/types/components/sTable';
 
 const props = withDefaults(defineProps<Props<T>>(), {
   rowKey: 'id',
-  border: true
+  border: true,
+  defaultExpandAll: false
 })
 
 const emit = defineEmits(['selectionChange', 'selectAll'])
@@ -38,6 +39,7 @@ interface Props<T> {
   loading?: boolean;
   rowKey?: string;
   border?: boolean
+  defaultExpandAll?: boolean
 }
 </script>
 
