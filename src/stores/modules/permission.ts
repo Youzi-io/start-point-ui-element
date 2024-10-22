@@ -8,7 +8,7 @@ export const usePermissionStore = defineStore('permissionStore', {
     whiteList: ['/login'],
     menuRouters: [],
     btnRouters: [],
-    isAddRoutes: false
+    isFirst: true
   }),
   actions: {
     async getRoutes() {
@@ -20,6 +20,9 @@ export const usePermissionStore = defineStore('permissionStore', {
     destruction() {
       usePermissionStore().$reset()
       flushDynamicRoutes()
+    },
+    setIsFinite(val: boolean) {
+      this.isFirst = val
     }
   },
   persist: {
@@ -31,5 +34,5 @@ interface State {
   whiteList: string[]
   menuRouters: RoutesInfoRes[]
   btnRouters: []
-  isAddRoutes: boolean
+  isFirst: boolean
 }
