@@ -1,7 +1,7 @@
 <template>
   <el-dialog v-model="show" title="添加菜单" width="500">
     <el-scrollbar height="58vh">
-      <el-form ref="formRef" :model="formData" :rules="rules" label-position="left" label-width="auto">
+      <el-form class="form" ref="formRef" :model="formData" :rules="rules" label-position="left" label-width="auto">
         <el-form-item label="上级菜单" prop="parentId">
           <el-tree-select v-model="formData.parentId" :data="treeData" node-key="id" :props="defaultProps"
             check-strictly :render-after-expand="false" />
@@ -12,7 +12,7 @@
           <el-radio-group v-model="formData.type">
             <el-radio v-for="item in routesTypeOptions" :key="item.id" :value="item.dictValue">{{
               item.dictTag
-              }}</el-radio>
+            }}</el-radio>
           </el-radio-group>
         </el-form-item>
 
@@ -64,7 +64,7 @@
           <el-radio-group v-model="formData.keepAlive">
             <el-radio v-for="item in keepAliveOptions" :key="item.id" :value="item.dictValue">{{
               item.dictTag
-              }}</el-radio>
+            }}</el-radio>
           </el-radio-group>
         </el-form-item>
 
@@ -72,7 +72,7 @@
           <el-radio-group v-model="formData.status">
             <el-radio v-for="item in statusOptions" :key="item.id" :value="item.dictValue">{{
               item.dictTag
-              }}</el-radio>
+            }}</el-radio>
           </el-radio-group>
         </el-form-item>
 
@@ -213,6 +213,11 @@ defineExpose({
 <script lang="ts"></script>
 
 <style lang="scss" scoped>
+.form {
+  width: 400px;
+  margin: 0 auto;
+}
+
 .hint {
   color: rgba(0, 0, 0, 0.45);
   font-size: 14px;

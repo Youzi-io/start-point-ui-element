@@ -1,7 +1,7 @@
 <template>
   <el-dialog v-model="show" title="添加字典数据" width="500">
     <el-scrollbar height="58vh">
-      <el-form ref="formRef" :model="formData" :rules="rules" label-position="left" label-width="auto">
+      <el-form class="form" ref="formRef" :model="formData" :rules="rules" label-position="left" label-width="auto">
         <el-form-item label="字典类型" prop="dictType">
           <el-input v-model="formData.dictType" disabled placeholder="请输入字典类型" />
         </el-form-item>
@@ -133,4 +133,9 @@ defineExpose({
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.form {
+  width: 400px;
+  margin: 0 auto;
+}
+</style>
