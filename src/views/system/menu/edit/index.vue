@@ -116,7 +116,7 @@ const formData = ref<EditRoutesParams>({
   orderIndex: 1
 })
 const validateParentIdSame = (rule: any, value: string, callback: any) => {
-  if (!value) return
+  if (!value) return true
   if (value !== formData.value.id) {
     callback()
   }
