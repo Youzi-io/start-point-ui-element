@@ -14,7 +14,7 @@
       </el-form-item>
 
       <el-form-item label="字典排序" prop="dictOrder">
-        <el-input-number v-model="formData.dictOrder" :min="0" :max="100" placeholder="请输入排序" />
+        <el-input-number v-model="formData.dictOrder" :min="0" :max="100" />
       </el-form-item>
 
       <el-form-item label="回显样式" prop="listClass">
@@ -27,7 +27,7 @@
         <el-radio-group v-model="formData.status">
           <el-radio v-for="item in statusOptions" :key="item.id" :value="item.dictValue">{{
             item.dictTag
-          }}</el-radio>
+            }}</el-radio>
         </el-radio-group>
       </el-form-item>
 

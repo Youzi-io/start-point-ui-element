@@ -18,7 +18,7 @@
       </el-form-item>
 
       <el-form-item label="排序" prop="orderIndex">
-        <el-input-number v-model="formData.orderIndex" :min="0" :max="100" placeholder="请输入排序" />
+        <el-input-number v-model="formData.orderIndex" :min="0" :max="100" />
       </el-form-item>
 
       <el-form-item label="权限" prop="routesIdList">
