@@ -1,15 +1,15 @@
 <template>
   <el-dialog v-model="show" title="编辑角色" width="500">
     <el-form ref="formRef" :model="formData" :rules="rules" label-position="left" label-width="auto">
-      <el-form-item label="角色名称" path="roleName">
+      <el-form-item label="角色名称" prop="roleName">
         <el-input v-model="formData.roleName" placeholder="请输入角色名称" />
       </el-form-item>
 
-      <el-form-item label="权限字符" path="roleKey">
+      <el-form-item label="权限字符" prop="roleKey">
         <el-input v-model="formData.roleKey" placeholder="请输入权限字符" />
       </el-form-item>
 
-      <el-form-item label="状态" path="status">
+      <el-form-item label="状态" prop="status">
         <el-radio-group v-model="formData.status">
           <el-radio v-for="item in statusOptions" :key="item.id" :value="item.dictValue">{{
             item.dictTag
@@ -17,11 +17,11 @@
         </el-radio-group>
       </el-form-item>
 
-      <el-form-item label="排序" path="orderIndex">
-        <el-input-number v-model="formData.orderIndex" :min="0" :max="100" placeholder="请输入排序" />
+      <el-form-item label="排序" prop="orderIndex">
+        <el-input-number v-model="formData.orderIndex" :min="0" :max="100" />
       </el-form-item>
 
-      <el-form-item label="权限" path="routesIdList">
+      <el-form-item label="权限" prop="routesIdList">
         <el-tree :data="treeData" show-checkbox node-key="id" default-expand-all check-strictly
           :default-checked-keys="formData.routesIdList" :props="defaultProps" @check="updateCheckedKeys" />
       </el-form-item>
