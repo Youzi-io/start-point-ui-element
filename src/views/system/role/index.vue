@@ -92,6 +92,7 @@ const columns: Columns[] = [
     label: '角色名称',
     prop: 'roleName',
     minWidth: '180',
+    align: 'center',
     showOverflowTooltip: true
   },
   {
