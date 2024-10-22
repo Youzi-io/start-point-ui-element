@@ -8,7 +8,7 @@ import axios, {
 import { ElMessage } from 'element-plus'
 
 const pendingMap = new Map<string, Canceler>()
-const loadingInstance: LoadingInstance = {
+const fullscreenLoadingInstance: LoadingInstance = {
   target: null,
   count: 0
 }
@@ -37,6 +37,7 @@ export default function createAxios<T>(
   options: Options = {}
 ): IPromise<T> | APromise<T> {
   const userStore = useUserStore()
+  const loadingStore = useLoadingStore()
 
   const instance = axios.create({
     baseURL: getUrl(),
@@ -48,6 +49,7 @@ export default function createAxios<T>(
     {
       cancelRepeatRequest: true, // 是否开启取消重复请求, 默认为 true
       loading: false, // 是否开启loading层效果, 默认为false
+      fullscreenLoading: false, // 是否开启fullscreenLoading层效果, 默认为false
       reductDataFormat: true, // 是否开启简洁的数据结构响应, 默认为true
       showErrorMessage: true, // 是否开启接口错误信息展示,默认为true
       showCodeMessage: false // 是否开启code不为200时的信息提示, 默认为false
@@ -58,20 +60,21 @@ export default function createAxios<T>(
   // 请求拦截
   instance.interceptors.request.use(
     (config) => {
-      removePending(config)
-      options.cancelRepeatRequest && addPending(config)
-      // 创建loading实例
-      if (options.loading) {
-        loadingInstance.count++
-        if (loadingInstance.count === 1) {
-          loadingInstance.target = useLoadingStore()
-          loadingInstance.target.isLoading(true)
+      // 创建fullscreenLoading实例
+      if (options.fullscreenLoading) {
+        fullscreenLoadingInstance.count++
+        if (fullscreenLoadingInstance.count === 1) {
+          fullscreenLoadingInstance.target = loadingStore
+          fullscreenLoadingInstance.target.setFullscreenLoading(true)
         }
       }
+      options.loading && loadingStore.setLoading(true)
       // 携带token
       if (userStore.token && config.headers) {
         config.headers.token = userStore.token
       }
+      removePending(config)
+      options.cancelRepeatRequest && addPending(config)
       return config
     },
     (error) => {
@@ -83,7 +86,8 @@ export default function createAxios<T>(
   instance.interceptors.response.use(
     (response) => {
       removePending(response.config)
-      options.loading && closeLoading(options)
+      options.fullscreenLoading && closefullscreenLoading(options)
+      options.loading && loadingStore.setLoading(false)
 
       if (options.showCodeMessage && response.data && response.data.code !== 200) {
         ElMessage({
@@ -97,7 +101,8 @@ export default function createAxios<T>(
     },
     (error) => {
       error.config && removePending(error.config)
-      options.loading && closeLoading(options) // 关闭loading
+      options.fullscreenLoading && closefullscreenLoading(options) // 关闭fullscreenLoading
+      options.loading && loadingStore.setLoading(false)
       options.showErrorMessage && httpErrorStatusHandle(error) // 处理错误状态码
       return Promise.reject(error) // 错误继续返回给到具体页面
     }
@@ -223,19 +228,22 @@ function getPendingKey(config: InternalAxiosRequestConfig) {
  * 关闭Loading层实例
  * @param options
  */
-function closeLoading(options: Options) {
-  if (options.loading && loadingInstance.count > 0) loadingInstance.count--
-  if (loadingInstance.count === 0) {
-    loadingInstance.target.isLoading(false)
-    loadingInstance.target = null
+function closefullscreenLoading(options: Options) {
+  if (options.fullscreenLoading && fullscreenLoadingInstance.count > 0)
+    fullscreenLoadingInstance.count--
+  if (fullscreenLoadingInstance.count === 0) {
+    fullscreenLoadingInstance.target.setFullscreenLoading(false)
+    fullscreenLoadingInstance.target = null
   }
 }
 
 interface Options {
   // 是否开启取消重复请求, 默认为 true
   cancelRepeatRequest?: boolean
-  // 是否开启loading层效果, 默认为false
+  // 是否开启loading层效果, 默认为false, 多用于表格loading效果
   loading?: boolean
+  // 是否开启fullscreenLoading层效果, 默认为false
+  fullscreenLoading?: boolean
   // 是否开启简洁的数据结构响应, 默认为true
   reductDataFormat?: boolean
   // 是否开启接口错误信息展示,默认为true
