@@ -7,9 +7,11 @@
       <el-header class="header">
         <LayoutHeader />
       </el-header>
-      <el-main class="content">
-        <LayoutContent />
-      </el-main>
+      <el-scrollbar height="100%">
+        <el-main class="content">
+          <LayoutContent />
+        </el-main>
+      </el-scrollbar>
     </el-container>
   </el-container>
 </template>
